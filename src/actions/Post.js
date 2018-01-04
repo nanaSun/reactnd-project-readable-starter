@@ -8,22 +8,21 @@
 // voteScore	Integer	Net votes the post has received (default: 1)
 // deleted	Boolean	Flag if post has been 'deleted' (inaccessible by the front end), (default: false)
 // 
-const CREATE_POST = 'CREATE_POST';
-const DELETE_POST = 'DELETE_POST';
-const UPDATE_POST = 'UPDATE_POST';
-export function postCreator ({ day, recipe, meal }) {
+export const CREATE_POST = 'CREATE_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const UPDATE_POST = 'UPDATE_POST';
+export function postCreator ({ id,item }) {
   return {
     type: CREATE_POST,
-    recipe,
-    day,
-    meal,
+    id,
+    item
   }
 }
 
-export function removeFromCalendar ({ day, meal }) {
+export function removeFromList ({ id,item }) {
   return {
     type: REMOVE_FROM_CALENDAR,
-    day,
-    meal,
+    id,
+    item
   }
 }

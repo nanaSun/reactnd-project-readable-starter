@@ -11,10 +11,11 @@ function postReducer (state = initialState, action) {
             	...state,
             	[action.id]:action.item
             };
-        case REMOVE_FROM_LIST:
-            return  Object.assign({}, state,{
+        case REMOVE_FROM_LIST://deleted=true
+            return {
+            	...state,
             	[action.id]:action.item
-            });
+            };
         case UPDATE_POST:
             return {
             	...state
