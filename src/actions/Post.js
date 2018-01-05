@@ -21,8 +21,17 @@ export function postCreator ({ id,item }) {
 
 export function removeFromList ({ id,item }) {
   return {
-    type: REMOVE_FROM_CALENDAR,
+    type: DELETE_POST,
     id,
     item
   }
 }
+
+export function updatePost ({ id,item }) {
+  return {
+    type: UPDATE_POST,
+    id,
+    item
+  }
+}
+
