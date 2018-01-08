@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 
 import {Route} from 'react-router-dom';
-import Category from './components/Category'
-import PostList from './components/PostList'
-import Post from './components/Post'
-import Comment from './components/Comment'
-import {getCategories} from './utils/api'
+
+import Category from './Category'
+import PostList from './PostList'
+import Post from './Post'
+import Comment from './Comment'
+import {getCategories} from '../utils/api'
 
 /*actions*/
-import {postCreator} from './actions/Post'
+import {postCreator} from '../actions/Post'
 
 class App extends Component {
   state={
@@ -35,17 +36,16 @@ class App extends Component {
     return (
       <div className="container">
 			<Route path="/" exact render={({history})=>(
-				<Category categories={categories}/>
-				)}
+          <PostList history={history} categories={categories} />
+			)}
 			/>
-			<Route path="/:categoryId" exact render={({history})=>(
-				<PostList onSelect={(data)=>{
-					console.log(data);
-					addPost({data})
-				}} history={history}/>
-				)}
-			/>
-			<Route path="/posts" exact component={PostList}/>
+      <Route path="/:categoryId" exact render={({history})=>(
+          <PostList onSelect={(data)=>{
+            console.log(data);
+            addPost({data})
+          }} history={history} categories={categories} />
+       )}
+      />
 			<Route path="/posts/:id" exact component={Post}/>
 			<Route path="/posts/:id/comments" exact component={Comment}/>
       </div>
@@ -54,11 +54,11 @@ class App extends Component {
 }
 
 function mapStateToProps({posts}){
-  console.log(posts)
+  // console.log(posts)
   return{}
 }
 function mapDispatchToProps(dispatch){
-  console.log(dispatch)
+  // console.log(dispatch)
   return{
   	addPost:(data)=>dispatch(postCreator(data))
   }

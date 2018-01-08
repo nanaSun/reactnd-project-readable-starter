@@ -7,6 +7,7 @@ class Post extends React.Component {
   }
   componentWillMount = () => {
   	const { id } = this.props.match.params
+    console.log(this.props)
   	this.getPost(id)
   }
   getPost = (id) => {

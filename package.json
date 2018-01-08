@@ -21,6 +21,7 @@
     "react-loading": "latest",
     "react-modal": "latest",
     "react-redux": "latest",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "latest",
     "redux": "latest"
   },
