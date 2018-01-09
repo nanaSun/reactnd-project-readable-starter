@@ -35,27 +35,23 @@ class App extends Component {
   	const { addPost} = this.props
     return (
       <div className="container">
-			<Route path="/" exact render={({history})=>(
-          <PostList history={history} categories={categories} />
-			)}
-			/>
-      <Route path="/:categoryId" exact render={({history})=>(
-          <PostList onSelect={(data)=>{
-            console.log(data);
-            addPost({data})
-          }} history={history} categories={categories} />
-       )}
-      />
-			<Route path="/posts/:id" exact component={Post}/>
-			<Route path="/posts/:id/comments" exact component={Comment}/>
+  			<Route path="/" exact render={({history})=>(
+            <PostList history={history} categories={categories} />
+  			)}
+  			/>
+        <Route path="/:categoryId" exact component={PostList} categories={categories} />
+  			<Route path="/posts/:id" exact component={Post}/>
+  			<Route path="/posts/:id/comments" exact component={Comment}/>
       </div>
     );
   }
 }
 
-function mapStateToProps({posts}){
-  // console.log(posts)
-  return{}
+function mapStateToProps(state){
+  console.log(state.categories)
+  return{
+    categories:state.categories
+  }
 }
 function mapDispatchToProps(dispatch){
   // console.log(dispatch)

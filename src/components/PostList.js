@@ -6,9 +6,12 @@ class PostList extends React.Component {
   	posts:[]
   }
   componentWillMount = () => {
-    let {pathname}=this.props.history.location
-  	let categoryId = pathname.replace("/","")
-  	this.getAllPosts(categoryId)
+    console.log("componentWillMount",this.props)
+  }
+  componentWillReceiveProps = (nextProps) => {
+    let {pathname}=nextProps.history.location
+    let categoryId = pathname.replace("/","")
+    this.getAllPosts(categoryId)
   }
   getAllPosts = (categoryId) => {
   	let _=this
@@ -28,14 +31,10 @@ class PostList extends React.Component {
   }
   render() {
   	const { posts } = this.state
-    const {categories} = this.props
+    const {categories} = []
     return (
       <div>
-      <ul className="list-books">
-          {categories.map((category)=>(
-            <li key={category.path}><Link to={'/'+category.path}>{category.name}</Link></li>
-          ))}
-      </ul>
+      
       <ul className="list-books">
    		{posts.map((post)=>(
             <li key={post.id}><Link to={"/posts/"+post.id}>{post.title}</Link></li>
