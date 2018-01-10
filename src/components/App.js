@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-
 import {Route} from 'react-router-dom';
-
 import Category from './Category'
 import PostList from './PostList'
 import Post from './Post'
-import Comment from './Comment'
 import {getCategories} from '../utils/api'
 
 /*actions*/
@@ -14,8 +11,7 @@ import {postCreator} from '../actions/Post'
 
 class App extends Component {
   state={
-  	categories:[],
-  	posts:{}
+    categories:[]
   }
   getAllCategories = () => {
   	let _=this
@@ -31,30 +27,27 @@ class App extends Component {
   	this.getAllCategories()
   }
   render() {
-  	const {categories}=this.state
+  	const { categories }=this.state
   	const { addPost} = this.props
+    console.log(this.props,this.state)
     return (
       <div className="container">
-  			<Route path="/" exact render={({history})=>(
-            <PostList history={history} categories={categories} />
-  			)}
-  			/>
-        <Route path="/:categoryId" exact component={PostList} categories={categories} />
-  			<Route path="/posts/:id" exact component={Post}/>
-  			<Route path="/posts/:id/comments" exact component={Comment}/>
+        <Category categories={categories}/>
+  			<Route path="/" exact component={PostList}/>
+        <Route path="/:categoryId" exact component={PostList}/>
+        <Route path="/posts/:id" exact component={Post}/>
       </div>
     );
   }
 }
 
 function mapStateToProps(state){
-  console.log(state.categories)
+  console.log("state",state)
   return{
     categories:state.categories
   }
 }
 function mapDispatchToProps(dispatch){
-  // console.log(dispatch)
   return{
   	addPost:(data)=>dispatch(postCreator(data))
   }

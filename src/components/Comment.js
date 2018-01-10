@@ -1,17 +1,16 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
 import {getComments} from '../utils/api'
 class Comment extends React.Component {
   state={
   	comments:[]
   }
   componentWillMount = () => {
-  	const { id } = this.props.match.params
-  	this.getComments(id)
+  	const { postId } = this.props
+  	this.getComments(postId)
   }
-  getComments = (id) => {
+  getComments = (postId) => {
     let _=this
-    getComments(id).then(function(res){
+    getComments(postId).then(function(res){
 			_.setState({
 				comments:res
 			})

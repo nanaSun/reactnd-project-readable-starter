@@ -6,16 +6,19 @@ class PostList extends React.Component {
   	posts:[]
   }
   componentWillMount = () => {
-    console.log("componentWillMount",this.props)
+    const {categoryId}=this.props.match.params;
+    this.getAllPosts(categoryId)
   }
   componentWillReceiveProps = (nextProps) => {
-    let {pathname}=nextProps.history.location
-    let categoryId = pathname.replace("/","")
-    this.getAllPosts(categoryId)
+    if(nextProps.match.params.categoryId !== this.props.match.params.categoryId){
+      const {categoryId}=nextProps.match.params;
+      this.getAllPosts(categoryId)
+    }
+     
   }
   getAllPosts = (categoryId) => {
   	let _=this
-  	if(categoryId===""){
+  	if(typeof categoryId === "undefined"){
 	    getAllPosts().then(function(res){
 			_.setState({
 				posts:res
@@ -31,7 +34,6 @@ class PostList extends React.Component {
   }
   render() {
   	const { posts } = this.state
-    const {categories} = []
     return (
       <div>
       
