@@ -7,6 +7,7 @@ const initialState={}
 export default function posts (state = initialState, action) {
 	 switch(action.type){
         case CREATE_POST:
+            console.log(action);
             return {
             	...state,
             	[action.id]:action.item

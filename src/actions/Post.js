@@ -11,27 +11,28 @@
 export const CREATE_POST = 'CREATE_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
-export function postCreator ({ id,item }) {
+export function postCreator ({ item }) {
+  console.log(item)
   return {
     type: CREATE_POST,
-    id,
-    item
+    id:item.id,
+    item:item
   }
 }
 
 export function removeFromList ({ id,item }) {
   return {
     type: DELETE_POST,
-    id,
-    item
+    id:item.id,
+    item:item
   }
 }
 
 export function updatePost ({ id,item }) {
   return {
     type: UPDATE_POST,
-    id,
-    item
+    id:item.id,
+    item:item
   }
 }
 

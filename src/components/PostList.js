@@ -1,6 +1,12 @@
 import React from 'react'
 import {Link } from 'react-router-dom';
 import {getPosts,getAllPosts} from '../utils/api'
+import {connect} from 'react-redux'
+import store from '../store'
+
+/*actions*/
+import {postCreator} from '../actions/Post'
+
 class PostList extends React.Component {
   state={
   	posts:[]
@@ -18,6 +24,18 @@ class PostList extends React.Component {
   }
   getAllPosts = (categoryId) => {
   	let _=this
+    this.props.addPost({
+      id: '9xf0y6ziyjabvozdd253nF',
+      timestamp: 1467166872634,
+      title: 'New post',
+      body: 'Everyone says so after all.',
+      author: 'thingtwo',
+      category: 'react',
+      voteScore: 6,
+      deleted: false,
+      commentCount: 0
+    }); 
+    console.log(this.props)
   	if(typeof categoryId === "undefined"){
 	    getAllPosts().then(function(res){
 			_.setState({
@@ -34,11 +52,11 @@ class PostList extends React.Component {
   }
   render() {
   	const { posts } = this.state
+    console.log(this.props)
     return (
       <div>
-      
       <ul className="list-books">
-   		{posts.map((post)=>(
+   		    {posts.map((post)=>(
             <li key={post.id}><Link to={"/posts/"+post.id}>{post.title}</Link></li>
           ))}
       </ul>
@@ -46,5 +64,12 @@ class PostList extends React.Component {
     )
   }
 }
-
-export default PostList
+function mapStateToProps(state){
+  return{}
+}
+function mapDispatchToProps(dispatch){
+  return{
+    addPost:(data)=>dispatch(postCreator({item:data}))
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(PostList);
