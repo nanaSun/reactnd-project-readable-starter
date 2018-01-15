@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import store from '../store'
 
 /*actions*/
-import {postCreator} from '../actions/Post'
+import {initPosts,postCreator} from '../actions/Post'
 
 class PostList extends React.Component {
   state={
@@ -35,19 +35,16 @@ class PostList extends React.Component {
       deleted: false,
       commentCount: 0
     }); 
-    console.log(this.props)
+    
   	if(typeof categoryId === "undefined"){
 	    getAllPosts().then(function(res){
-			_.setState({
-				posts:res
-			})
-		})
+			   _.props.getPosts(res)
+         console.log(_.props,_.state)
+		  })
   	}else{
 	    getPosts(categoryId).then(function(res){
-			_.setState({
-				posts:res
-			})
-		})  		
+  			_.props.getPosts(res)
+		  })  		
   	}
   }
   render() {
@@ -65,10 +62,12 @@ class PostList extends React.Component {
   }
 }
 function mapStateToProps(state){
+  console.log("mapStateToProps",state);
   return{}
 }
 function mapDispatchToProps(dispatch){
   return{
+    getPosts:(items)=>dispatch(initPosts({item:items})),
     addPost:(data)=>dispatch(postCreator({item:data}))
   }
 }

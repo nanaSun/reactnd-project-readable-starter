@@ -11,8 +11,15 @@
 export const CREATE_POST = 'CREATE_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
+export const GET_POSTS = 'GET_POSTS';
+
+export function initPosts ({ item }) {
+  return {
+    type: GET_POSTS,
+    item:item
+  }
+}
 export function postCreator ({ item }) {
-  console.log(item)
   return {
     type: CREATE_POST,
     id:item.id,
