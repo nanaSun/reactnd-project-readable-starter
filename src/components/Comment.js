@@ -1,23 +1,25 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {getComments} from '../utils/api'
+
+/*actions*/
+import {initComments,CommentCreator} from '../actions/Comment'
+
 class Comment extends React.Component {
-  state={
-  	comments:[]
-  }
   componentWillMount = () => {
   	const { postId } = this.props
   	this.getComments(postId)
   }
   getComments = (postId) => {
     let _=this
+
     getComments(postId).then(function(res){
-			_.setState({
-				comments:res
-			})
+        _.props.getComments(res)
 		}) 
+
   }
   render() {
-  	const { comments } = this.state
+  	const { comments } = this.props
     return (
     <div className="books">
       <ul className="list-comments">
@@ -29,5 +31,18 @@ class Comment extends React.Component {
     )
   }
 }
-
-export default Comment
+function mapStateToProps(state){
+  console.log(state)
+  return{
+    comments:Object.keys(state.comments).map(function(key) {
+        return state.comments[key];
+    })
+  }
+}
+function mapDispatchToProps(dispatch){
+  return{
+    getComments:(items)=>dispatch(initComments({item:items})),
+    addComment:(data)=>dispatch(CommentCreator({item:data}))
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Comment);

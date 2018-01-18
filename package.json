@@ -23,7 +23,8 @@
     "react-redux": "latest",
     "react-router-redux": "^4.0.8",
     "react-scripts": "latest",
-    "redux": "latest"
+    "redux": "latest",
+    "form-serialize": "^0.7.2"
   },
   "scripts": {
     "start": "react-scripts start",

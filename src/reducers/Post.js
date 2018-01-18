@@ -8,13 +8,13 @@ const initialState={}
 export default function posts (state = initialState, action) {
 	 switch(action.type){
         case GET_POSTS:
-            console.log(action);
             return {
-                ...state,
-                ...action.item
+                ...action.item.reduce(function(result, item) {
+                  result[item.id] = item;
+                  return result;
+                }, {})
             };
         case CREATE_POST:
-            console.log(action);
             return {
             	...state,
             	[action.id]:action.item

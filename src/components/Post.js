@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux'
 import Comment from './Comment'
 import {getPost} from '../utils/api'
 class Post extends React.Component {
@@ -55,4 +56,13 @@ class Post extends React.Component {
   }
 }
 
-export default Post
+function mapStateToProps(state){
+  console.log(state)
+  return{
+  }
+}
+function mapDispatchToProps(dispatch){
+  return{
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Post);

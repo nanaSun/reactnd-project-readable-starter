@@ -17,10 +17,4 @@ class App extends Component {
     );
   }
 }
-function mapStateToProps(state){
-  return{}
-}
-function mapDispatchToProps(dispatch){
-  return{}
-}
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default App;
