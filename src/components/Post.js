@@ -2,6 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux'
 import Comment from './Comment'
+import Modal from 'react-modal'
 import {getPost} from '../utils/api'
 class Post extends React.Component {
   state={
@@ -12,8 +13,11 @@ class Post extends React.Component {
     author:'',
     category:'',
     voteScore:0,
-    deleted:false
+    deleted:false,
+    editPost:false
   }
+  openPostPanel = () => this.setState(() => ({ editPost: true }))
+  closePostPanel = () => this.setState(() => ({ editPost: false }))
   componentWillMount = () => {
   	const { id } = this.props.match.params
   	this.getPost(id)
@@ -34,13 +38,13 @@ class Post extends React.Component {
 		}) 
   }
   render() {
-  	const { title,timestamp ,body,author,category,voteScore,deleted,id} = this.state
+  	const { title,timestamp ,body,author,category,voteScore,deleted,id,editPost} = this.state
     let CommentTpl=""
     if(id){
       CommentTpl=(<Comment postId={id}></Comment>)
     }
     return (
-      <div className="wrapper">
+     <div className="wrapper">
         <div className="books">
           <p>{id}</p>
           <p>{title}</p>
@@ -51,6 +55,18 @@ class Post extends React.Component {
           <p>{voteScore}</p>
         </div>
         {CommentTpl}
+        <butttn onClick={this.openPostPanel}>edit</butttn>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={editPost}
+          onRequestClose={this.closePostPanel}
+          contentLabel='Modal'
+        >
+          <form>
+            <input type="text" />
+          </form>
+        </Modal>
       </div>
     )
   }
