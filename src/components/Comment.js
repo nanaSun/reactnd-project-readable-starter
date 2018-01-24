@@ -32,7 +32,7 @@ class Comment extends React.Component {
   }
 }
 function mapStateToProps(state){
-  console.log(state)
+  console.log("Comment",state)
   return{
     comments:Object.keys(state.comments).map(function(key) {
         return state.comments[key];

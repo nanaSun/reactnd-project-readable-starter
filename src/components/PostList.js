@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link } from 'react-router-dom';
-import {getPosts,getAllPosts,addPost as addNewPost} from '../utils/api'
+import {addPost as addNewPost} from '../utils/api'
 import {connect} from 'react-redux'
 import store from '../store'
 
@@ -8,28 +8,23 @@ import store from '../store'
 import {initPosts,postCreator} from '../actions/Post'
 
 class PostList extends React.Component {
-  componentWillMount = () => {
-    const {categoryId}=this.props.match.params;
-    this.getAllPosts(categoryId)
+  state={
+    categoryId:-1
   }
-  componentWillReceiveProps = (nextProps) => {
+  componentWillMount(){
+    const {categoryId}=this.props.match.params
+    this.setState({
+      categoryId:categoryId
+    })
+  }
+  componentWillReceiveProps(nextProps){
+    console.log(this.state)
     if(nextProps.match.params.categoryId !== this.props.match.params.categoryId){
-      const {categoryId}=nextProps.match.params;
-      this.getAllPosts(categoryId)
+      const {categoryId}=nextProps.match.params
+      this.setState({
+        categoryId:categoryId
+      })
     }
-     
-  }
-  getAllPosts = (categoryId) => {
-  	let _=this
-  	if(typeof categoryId === "undefined"){
-	    getAllPosts().then(function(res){
-			   _.props.getPosts(res)
-		  })
-  	}else{
-	    getPosts(categoryId).then(function(res){
-  			_.props.getPosts(res)
-		  })  		
-  	}
   }
   addPost(){
     let _=this
@@ -59,8 +54,13 @@ class PostList extends React.Component {
     
   }
   render() {
-  	const { posts } = this.props
-    console.log(this.props)
+    const {categoryId}= this.state
+    let { posts } = this.props
+    if(categoryId!==-1){
+      posts=posts.filter(function(post){
+        return post.category===categoryId
+      })
+    }
     return (
       <div>
       <ul className="list-books">
@@ -74,7 +74,7 @@ class PostList extends React.Component {
   }
 }
 function mapStateToProps(state){
-  console.log(state)
+  console.log("PostList",state)
   return{
     posts:Object.keys(state.posts).map(function(key) {
         return state.posts[key];
@@ -83,7 +83,6 @@ function mapStateToProps(state){
 }
 function mapDispatchToProps(dispatch){
   return{
-    getPosts:(items)=>dispatch(initPosts({item:items})),
     addPost:(data)=>dispatch(postCreator({item:data}))
   }
 }
