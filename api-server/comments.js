@@ -25,7 +25,13 @@ const defaultData = {
     parentDeleted: false
   }
 }
-
+function md5 (data) {
+    var Buffer = require("buffer").Buffer;
+    var buf = new Buffer(data);
+    var str = buf.toString("binary");
+    var crypto = require("crypto");
+    return crypto.createHash("md5WithRSAEncryption").update(str).digest("base64");
+}
 function getData (token) {
   let data = db[token]
   if (data == null) {
@@ -57,7 +63,7 @@ function get (token, id) {
 function add (token, comment) {
   return new Promise((res) => {
     let comments = getData(token)
-
+    comment.id=md5(comment.title+comment.timestamp+comment.parentId);
     comments[comment.id] = {
       id: comment.id,
       timestamp: comment.timestamp,

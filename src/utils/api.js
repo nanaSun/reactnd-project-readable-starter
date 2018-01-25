@@ -1,4 +1,3 @@
-import serialize from 'form-serialize'
 
 const api = "http://localhost:3001"
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -63,4 +62,13 @@ export const deletePost = (id) =>
 export const getComments = (id) =>
   fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
+    .then(data => data)
+
+export const addComment = (comment) =>
+  fetch(`${api}/comments/`,{
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(comment)
+  })
+  .then(res => res.json())
     .then(data => data)

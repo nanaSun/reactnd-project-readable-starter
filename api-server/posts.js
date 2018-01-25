@@ -26,6 +26,13 @@ const defaultData = {
     commentCount: 0
   }
 }
+function md5 (data) {
+    var Buffer = require("buffer").Buffer;
+    var buf = new Buffer(data);
+    var str = buf.toString("binary");
+    var crypto = require("crypto");
+    return crypto.createHash("md5WithRSAEncryption").update(str).digest("base64");
+}
 
 function getData (token) {
   let data = db[token]
@@ -67,7 +74,7 @@ function getAll (token) {
 function add (token, post) {
   return new Promise((res) => {
     let posts = getData(token)
-
+    post.id=md5(post.title+post.timestamp+post.author+post.category);
     posts[post.id] = {
       id: post.id,
       timestamp: post.timestamp,

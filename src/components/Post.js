@@ -1,10 +1,12 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux'
 import Comment from './Comment'
 import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
-import {updatePost,getPost} from '../utils/api'
+import {updatePost,getPost,addPost as addNewPost} from '../utils/api'
+import PostView from '../views/PostView'
+import EditPostView from '../views/EditPostView'
+import {updatePost as asyncUpdatePost,postCreator} from '../actions/Post'
 class Post extends React.Component {
   state={
     id:'',
@@ -15,18 +17,29 @@ class Post extends React.Component {
     category:'',
     voteScore:0,
     deleted:false,
-    editPost:false
+    editPost:false,
+    addNewPost:false
   }
   openPostPanel = () => this.setState(() => ({ editPost: true }))
   closePostPanel = () => this.setState(() => ({ editPost: false }))
   componentWillMount = () => {
+    let _=this;
     //I don't know why I need to use this code
     Modal.setAppElement('body');
   	const { id } = this.props.match.params
-  	this.getPost(id)
+    if(id==="add"){
+      _.setState({
+        editPost:true,
+        addNewPost:true
+      })
+    }else{
+      _.getPost(id)
+    }
+  	
   }
   updatePost = (e) => {
     e.preventDefault()
+     console.log(this)
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
     _.closePostPanel()
@@ -41,7 +54,25 @@ class Post extends React.Component {
         deleted:_.state.deleted
     }).then(function(res){
       _.props.updatePost(_.state.id,{...res})
+      _.setState({...res})
     })
+  }
+  createNewPost = (e) =>{
+    e.preventDefault()
+    var _=this;
+    const inputs = serializeForm(e.target, { hash: true })
+    _.closePostPanel()
+    addNewPost({
+        timestamp:inputs.timestamp,
+        title:inputs.title,
+        body:inputs.body,
+        author:inputs.author,
+        category:inputs.category
+    }).then(function(res){
+       _.props.addPost({...res}); 
+       _.setState({...res})
+    })      
+    
   }
   getPost = (id) => {
     let _=this
@@ -54,7 +85,8 @@ class Post extends React.Component {
     }
   }
   render() {
-  	const { title,timestamp ,body,author,category,voteScore,deleted,id,editPost} = this.state
+    const params=this.state;
+  	const {id,editPost,addNewPost} = params;
     let CommentTpl=""
     if(id){
       CommentTpl=(<Comment postId={id}></Comment>)
@@ -68,15 +100,7 @@ class Post extends React.Component {
           onRequestClose={this.openPostPanel}
           contentLabel='Modal'
         >
-          <div className="books">
-            <p>{id}</p>
-            <p>{title}</p>
-            <p>{timestamp}</p>
-            <p>{body}</p>
-            <p>{author}</p>
-            <p>{category}</p>
-            <p>{voteScore}</p>
-          </div>
+          <PostView params={params}/>
           {CommentTpl}
           <button onClick={this.openPostPanel}>edit</button>
         </Modal>
@@ -87,28 +111,24 @@ class Post extends React.Component {
           onRequestClose={this.closePostPanel}
           contentLabel='Modal'
         >
-          <form onSubmit={this.updatePost}>
-            <p><input type="text" name="title" defaultValue={title}/></p>
-            <p><input type="text" name="timestamp" defaultValue={timestamp}/></p>
-            <p><input type="text" name="body" defaultValue={body}/></p>
-            <p><input type="text" name="author" defaultValue={author}/></p>
-            <p><input type="text" name="category" defaultValue={category}/></p>
-            <button>update</button>
-          </form>
+          
+            <EditPostView params={params} addNewPost={addNewPost}  operation={addNewPost?this.createNewPost:this.updatePost}/>
+          
         </Modal>
       </div>
     )
   }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state,props){
   return{
     Posts:state.posts
   }
 }
 function mapDispatchToProps(dispatch){
   return{
-    updatePost:(id,data)=>dispatch(updatePost({id:id,item:data}))
+    addPost:(data)=>dispatch(postCreator({item:data})),
+    updatePost:(id,data)=>dispatch(asyncUpdatePost({id:id,item:data}))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post);

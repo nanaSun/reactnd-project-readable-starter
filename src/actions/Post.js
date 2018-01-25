@@ -34,7 +34,6 @@ export function removeFromList ({ id,item }) {
     item:item
   }
 }
-
 export function updatePost ({ id,item }) {
   return {
     type: UPDATE_POST,
