@@ -72,3 +72,31 @@ export const addComment = (comment) =>
   })
   .then(res => res.json())
     .then(data => data)
+
+export const updateComment = (id,comment) =>
+  fetch(`${api}/comments/${id}`,{
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify(comment)
+  })
+  .then(res => res.json())
+    .then(data => data)
+
+
+export const postVote = (id,params) =>
+  fetch(`${api}/posts/${id}`,{
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(params)
+  })
+  .then(res => res.json())
+  .then(data => data)
+
+export const commentVote = (id,params) =>
+  fetch(`${api}/comments/${id}`,{
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(params)
+  })
+  .then(res => res.json())
+  .then(data => data)

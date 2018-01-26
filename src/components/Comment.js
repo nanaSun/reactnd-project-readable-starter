@@ -1,68 +1,96 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getComments,addComment} from '../utils/api'
+import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
-/*actions*/
-import {initComments,CommentCreator} from '../actions/Comment'
+import {updateComment} from '../utils/api'
+import Vote from './Vote'
+import CommentView from '../views/CommentView'
+import EditCommentView from '../views/EditCommentView'
 
+import {CommentUpdate as asyncUpdateComment} from '../actions/Comment'
 class Comment extends React.Component {
+  state={
+    id:'',
+    parentId:'',
+    timestamp:0,
+    body:'',
+    author:'',
+    voteScore:0,
+    parentDeleted:false,
+    deleted:false,
+    editComment:false
+  }
+  openCommentPanel = () => this.setState(() => ({ editComment: true }))
+  closeCommentPanel = () => this.setState(() => ({ editComment: false }))
   componentWillMount = () => {
-  	const { postId } = this.props
-  	this.getComments(postId)
+    let _=this;
+    //I don't know why I need to use this code
+    Modal.setAppElement('body');
+    const { CommentId } = this.props
+    _.getComment(CommentId)
+    
   }
-  getComments = (postId) => {
-    let _=this
-
-    getComments(postId).then(function(res){
-        _.props.getComments(res)
-		}) 
-
-  }
-  addComment = (e) => {
+  updateComment = (e) => {
     e.preventDefault()
+     console.log(this)
     var _=this;
-    const { postId,timestamp,author} = this.props
     const inputs = serializeForm(e.target, { hash: true })
-    addComment({
-        timestamp: timestamp,
-        author: author,
-        parentId: postId,
-        body:inputs.newComment
+    _.closeCommentPanel()
+    updateComment(_.state.id,{
+        id:_.state.id,
+        timestamp:inputs.timestamp,
+        body:inputs.body,
+        author:inputs.author,
+        voteScore:_.state.voteScore,
+        deleted:_.state.deleted,
+        parentDeleted:_.state.parentDeleted
     }).then(function(res){
-       _.props.addComment({...res}); 
-       _.setState({...res})
-    })      
-
+      _.props.updateComment(_.state.id,{...res})
+      _.setState({...res})
+    })
+  }
+  getComment = (id) => {
+    let _=this
+    _.setState({..._.props.comments[id]})
   }
   render() {
-  	const { comments } = this.props
+    const params=this.state;
+    const {id,editComment} = params;
     return (
-    <div className="books">
-      <ul className="list-comments">
-          {comments.map((comment)=>(
-            <li key={comment.id}><p>{comment.author}</p><p>{comment.body}</p></li>
-          ))}
-      </ul>
-      <form onSubmit={this.addComment}>
-        <input name="newComment"/>
-        <button>addComment</button>
-      </form>
-    </div>
+     <div className="wrapper">
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={!editComment}
+          onRequestClose={this.openCommentPanel}
+          contentLabel='Modal'
+        >
+          <CommentView comment={params}/>
+          <Vote commentid={id} type="comment"/>
+          <button onClick={this.openCommentPanel}>edit</button>
+        </Modal>
+        <Modal
+          className='modal'
+          overlayClassName='overlay'
+          isOpen={editComment}
+          onRequestClose={this.closeCommentPanel}
+          contentLabel='Modal'
+        >
+            <EditCommentView comment={params} operation={this.updateComment}/> 
+        </Modal>
+      </div>
     )
   }
 }
-function mapStateToProps(state){
-  console.log("Comment",state)
+
+function mapStateToProps(state,props){
   return{
-    comments:Object.keys(state.comments).map(function(key) {
-        return state.comments[key];
-    })
+    comments:state.comments
   }
 }
 function mapDispatchToProps(dispatch){
   return{
-    getComments:(items)=>dispatch(initComments({item:items})),
-    addComment:(data)=>dispatch(CommentCreator({id:data.id,item:data}))
+    updateComment:(id,data)=>dispatch(asyncUpdateComment({id:id,item:data}))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Comment);

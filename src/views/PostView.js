@@ -8,7 +8,6 @@ const PostView=({params})=>(
     <p>body:{params.body}</p>
     <p>author:{params.author}</p>
     <p>category:{params.category}</p>
-    <p>voteScore:{params.voteScore}</p>
   </div>
 )
 export default PostView

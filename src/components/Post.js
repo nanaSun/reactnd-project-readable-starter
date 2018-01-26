@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Comment from './Comment'
+import CommentList from './CommentList'
+import Vote from './Vote'
 import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
 import {updatePost,getPost,addPost as addNewPost} from '../utils/api'
@@ -80,6 +81,7 @@ class Post extends React.Component {
       _.setState({..._.props.Posts[id]})
     }else{
       getPost(id).then(function(res){
+        _.props.updatePost(id,{...res})
         _.setState({...res})
       })
     }
@@ -87,10 +89,12 @@ class Post extends React.Component {
   render() {
     const params=this.state;
   	const {id,editPost,addNewPost} = params;
-    let CommentTpl=""
+    let CommentTpl="",voteTpl=""
     if(id){
-      CommentTpl=(<Comment postId={id}></Comment>)
+      CommentTpl=(<CommentList postId={id}></CommentList>)
+      voteTpl=( <Vote postID={id} type="post"/>)
     }
+    console.log(id)
     return (
      <div className="wrapper">
         <Modal
@@ -101,6 +105,7 @@ class Post extends React.Component {
           contentLabel='Modal'
         >
           <PostView params={params}/>
+          {voteTpl}
           {CommentTpl}
           <button onClick={this.openPostPanel}>edit</button>
         </Modal>

@@ -31,7 +31,7 @@ function md5 (data) {
     var buf = new Buffer(data);
     var str = buf.toString("binary");
     var crypto = require("crypto");
-    return crypto.createHash("md5WithRSAEncryption").update(str).digest("base64");
+    return crypto.createHash("md5WithRSAEncryption").update(str).digest("hex");
 }
 
 function getData (token) {
