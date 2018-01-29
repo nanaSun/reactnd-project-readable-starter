@@ -1,0 +1,13 @@
+/* CSS Document */
+body,html{-webkit-text-size-adjust: none;-moz-text-size-adjust:none; -ms-text-size-adjust: none;text-size-adjust: none}
+a,body,div,h3,li,p,ul, article, section, div ,h1{padding:0;margin:0;word-wrap:break-word;list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-tap-highlight-color:transparent; font-weight:normal;}
+
+body{font: 16px/1.5 Helvetica,Arial,Verdana,sans-serif;background:#fff; color:#333; width: 100%;margin: 0 auto;}
+
+.category-menu{ position: fixed; top:0px; left: 0px;  background: #eee; text-align: center; width:120px; }
+.category-menu li{height: 44px; line-height: 44px; }
+.category-menu li a{color: #fff;}
+.category-menu li:nth-child(odd){ background: #f14d69; }
+.category-menu li:nth-child(even){ background: #9c47bd; }
+
+.post-list{ width: 80%; margin:0 auto; }

@@ -49,7 +49,7 @@ export const updatePost = (postid,post) =>
     .then(data => data)
 
 export const deletePost = (id) =>
-	fetch(`${api}/posts`, {
+	fetch(`${api}/posts/${id}`, {
 		method: 'DELETE',
 		headers: headers,
 		body: JSON.stringify({
@@ -82,6 +82,16 @@ export const updateComment = (id,comment) =>
   .then(res => res.json())
     .then(data => data)
 
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`,{
+    method: 'DELETE',
+    headers: headers,
+    body: JSON.stringify({
+      id:id
+    })
+  })
+  .then(res => res.json())
+  .then(data => data)
 
 export const postVote = (id,params) =>
   fetch(`${api}/posts/${id}`,{

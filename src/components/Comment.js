@@ -2,12 +2,12 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
-import {updateComment} from '../utils/api'
+import {updateComment,deleteComment} from '../utils/api'
 import Vote from './Vote'
 import CommentView from '../views/CommentView'
 import EditCommentView from '../views/EditCommentView'
 
-import {CommentUpdate as asyncUpdateComment} from '../actions/Comment'
+import {CommentUpdate as asyncUpdateComment,CommentRemove} from '../actions/Comment'
 class Comment extends React.Component {
   state={
     id:'',
@@ -25,7 +25,7 @@ class Comment extends React.Component {
   componentWillMount = () => {
     let _=this;
     //I don't know why I need to use this code
-    Modal.setAppElement('body');
+    Modal.setAppElement('#root');
     const { CommentId } = this.props
     _.getComment(CommentId)
     
@@ -49,6 +49,14 @@ class Comment extends React.Component {
       _.setState({...res})
     })
   }
+  deleteComment=(e)=>{
+    var _=this,id=e;
+    console.log(id)
+    deleteComment(id).then(function(res){
+      console.log(res)
+      _.props.deleteComment(res.id,res)
+    })
+  }
   getComment = (id) => {
     let _=this
     _.setState({..._.props.comments[id]})
@@ -68,6 +76,8 @@ class Comment extends React.Component {
           <CommentView comment={params}/>
           <Vote commentid={id} type="comment"/>
           <button onClick={this.openCommentPanel}>edit</button>
+          <button onClick={this.deleteComment.bind(this,id)}>delete</button>
+            
         </Modal>
         <Modal
           className='modal'
@@ -90,7 +100,8 @@ function mapStateToProps(state,props){
 }
 function mapDispatchToProps(dispatch){
   return{
-    updateComment:(id,data)=>dispatch(asyncUpdateComment({id:id,item:data}))
+    updateComment:(id,data)=>dispatch(asyncUpdateComment({id:id,item:data})),
+    deleteComment:(id,data)=>dispatch(CommentRemove({id:data.id,item:data}))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Comment);

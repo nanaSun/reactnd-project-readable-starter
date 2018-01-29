@@ -22,7 +22,7 @@ class Category extends React.Component {
   render() {
     const { categories } = this.state
     return (
-    <ul className="list-books">
+    <ul className="category-menu">
         {categories.map((category)=>(
           <li key={category.path}><Link to={'/'+category.path}>{category.name}</Link></li>
         ))}

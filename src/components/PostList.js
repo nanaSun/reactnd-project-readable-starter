@@ -2,7 +2,7 @@ import React from 'react'
 import {Link } from 'react-router-dom';
 import {getAllPosts} from '../utils/api'
 import {connect} from 'react-redux'
-
+import '../styles/postlist.css';
 /*actions*/
 import {initPosts} from '../actions/Post'
 
@@ -30,20 +30,23 @@ class PostList extends React.Component {
       })
     }
   }
-  
   render() {
     const {categoryId}= this.state
     let { posts } = this.props
     console.log(categoryId,posts)
-    if(categoryId!==-1){
+    if(categoryId!==-1&&categoryId!=="post"){
       posts=posts.filter(function(post){
-        return post.category===categoryId
+        return post.category===categoryId&&!post.deleted
+      })
+    }else{
+      posts=posts.filter(function(post){
+        return !post.deleted
       })
     }
 
     return (
-      <div>
-        <ul className="list-books">
+      <div className="post-list">
+        <ul>
      		    {posts.map((post)=>(
               <li key={post.id}><Link to={"/post/"+post.id}>{post.title}</Link></li>
             ))}

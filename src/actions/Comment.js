@@ -9,7 +9,7 @@ export function CommentCreator ({ id,item }) {
     item
   }
 }
-export function CommentDelete ({ id,item }) {
+export function CommentRemove ({ id,item }) {
   return {
     type: DELETE_COMMENT,
     id,

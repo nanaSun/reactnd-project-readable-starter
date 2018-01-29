@@ -1,13 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom'; 
 import CommentList from './CommentList'
 import Vote from './Vote'
 import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
-import {updatePost,getPost,addPost as addNewPost} from '../utils/api'
+import {updatePost,getPost,addPost as addNewPost,deletePost} from '../utils/api'
 import PostView from '../views/PostView'
 import EditPostView from '../views/EditPostView'
-import {updatePost as asyncUpdatePost,postCreator} from '../actions/Post'
+import {updatePost as asyncUpdatePost,postCreator,removeFromList} from '../actions/Post'
 class Post extends React.Component {
   state={
     id:'',
@@ -19,24 +20,47 @@ class Post extends React.Component {
     voteScore:0,
     deleted:false,
     editPost:false,
-    addNewPost:false
+    addNewPost:false,
+    addNewPostResult:false
   }
   openPostPanel = () => this.setState(() => ({ editPost: true }))
   closePostPanel = () => this.setState(() => ({ editPost: false }))
   componentWillMount = () => {
     let _=this;
     //I don't know why I need to use this code
-    Modal.setAppElement('body');
+    Modal.setAppElement('#root');
   	const { id } = this.props.match.params
     if(id==="add"){
       _.setState({
         editPost:true,
-        addNewPost:true
+        addNewPost:true,
+        addNewPostResult:false
       })
     }else{
       _.getPost(id)
     }
   	
+  }
+  componentWillReceiveProps = (nextProps) =>{
+    console.log(nextProps.match.params.id ,this.props.match.params.id);
+    if(nextProps.match.params.id !== this.props.match.params.id){
+      const { id } = nextProps.match.params
+      let _=this;
+      if(id==="add"){
+        _.setState({
+          editPost:true,
+          addNewPost:true,
+          addNewPostResult:false
+        })
+      }else{
+        _.setState({
+          editPost:false,
+          addNewPost:false,
+          addNewPostResult:false
+        })
+        _.getPost(id)
+      }
+    }
   }
   updatePost = (e) => {
     e.preventDefault()
@@ -62,7 +86,7 @@ class Post extends React.Component {
     e.preventDefault()
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
-    _.closePostPanel()
+    
     addNewPost({
         timestamp:inputs.timestamp,
         title:inputs.title,
@@ -70,8 +94,9 @@ class Post extends React.Component {
         author:inputs.author,
         category:inputs.category
     }).then(function(res){
-       _.props.addPost({...res}); 
-       _.setState({...res})
+       _.props.addPost({...res});
+       _.setState({...res,addNewPostResult:true})
+       _.closePostPanel()
     })      
     
   }
@@ -86,15 +111,30 @@ class Post extends React.Component {
       })
     }
   }
-  render() {
+  deletePost=(e)=>{ 
+    var _=this,id=e;
+    console.log(id)
+    deletePost(id).then(function(res){
+      _.props.deletePost(res.id,res)
+      _.setState({...res})
+    })
+  }
+  render=()=>{
     const params=this.state;
-  	const {id,editPost,addNewPost} = params;
+  	const {id,editPost,addNewPost,addNewPostResult} = params;
+    console.log("addNewPostResult",addNewPostResult);
+    if(addNewPostResult){
+      let directURl="/post/"+id
+      return <Redirect push to={directURl} />;
+    }
+    if((id===""||params.deleted)&&!editPost){
+      return <Redirect push to="/post" />; 
+    }
     let CommentTpl="",voteTpl=""
     if(id){
       CommentTpl=(<CommentList postId={id}></CommentList>)
       voteTpl=( <Vote postID={id} type="post"/>)
     }
-    console.log(id)
     return (
      <div className="wrapper">
         <Modal
@@ -108,6 +148,7 @@ class Post extends React.Component {
           {voteTpl}
           {CommentTpl}
           <button onClick={this.openPostPanel}>edit</button>
+          <button onClick={this.deletePost.bind(this,id)}>delete</button>
         </Modal>
         <Modal
           className='modal'
@@ -133,7 +174,8 @@ function mapStateToProps(state,props){
 function mapDispatchToProps(dispatch){
   return{
     addPost:(data)=>dispatch(postCreator({item:data})),
-    updatePost:(id,data)=>dispatch(asyncUpdatePost({id:id,item:data}))
+    updatePost:(id,data)=>dispatch(asyncUpdatePost({id:id,item:data})),
+    deletePost:(id,data)=>dispatch(removeFromList({id:id,item:data}))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post);

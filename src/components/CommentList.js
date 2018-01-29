@@ -33,24 +33,19 @@ class CommentList extends React.Component {
        _.props.addComment({...res}); 
        _.setState({...res})
     })      
-
-  }
-  closeEditPanel(){
-
-  }
-  openEditPanel(){
-
-  }
-  updateComment(){
-
   }
   render() {
-  	const { comments } = this.props
+  	let { comments } = this.props
+    comments=comments.filter(function(i){
+      return !i.deleted;
+    })
     return (
     <div className="books">
       <ul className="list-comments">
-          {comments.map((comment)=>(
-            <Comment CommentId={comment.id}  key={comment.id}/>
+          {comments.length>0&&comments.map((comment)=>(
+            <div   key={comment.id}>
+            <Comment CommentId={comment.id}/>
+            </div>
           ))}
       </ul>
       <form onSubmit={this.addComment}>
