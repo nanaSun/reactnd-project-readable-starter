@@ -3,11 +3,40 @@ body,html{-webkit-text-size-adjust: none;-moz-text-size-adjust:none; -ms-text-si
 a,body,div,h3,li,p,ul, article, section, div ,h1{padding:0;margin:0;word-wrap:break-word;list-style:none;-webkit-box-sizing:border-box;box-sizing:border-box;-webkit-tap-highlight-color:transparent; font-weight:normal;}
 
 body{font: 16px/1.5 Helvetica,Arial,Verdana,sans-serif;background:#fff; color:#333; width: 100%;margin: 0 auto;}
+ button{  background: none; border: none; }
 
+header{ height: 30px; line-height: 30px; width: 100%; background: green; color: #fff; text-align: center; margin-bottom: 10px;  }
+.wrapper,.ReactModalPortal{ width: 80%;margin:0 auto; }
 .category-menu{ position: fixed; top:0px; left: 0px;  background: #eee; text-align: center; width:120px; }
+.category-menu ul{ position: relative; }
 .category-menu li{height: 44px; line-height: 44px; }
 .category-menu li a{color: #fff;}
 .category-menu li:nth-child(odd){ background: #f14d69; }
 .category-menu li:nth-child(even){ background: #9c47bd; }
 
-.post-list{ width: 80%; margin:0 auto; }
+.slide-enter.category-menu{transform: translate3d(-100%, 0, 0);}
+.slide-enter.slide-enter-active.category-menu{animation: slideInDown .3s 0s ease-in-out both;}
+
+.slide-exit.category-menu{ transform: translate3d(0, 0, 0);}
+.slide-exit.slide-exit-active.category-menu{ animation: slideInUp .3s 0s ease-in-out both;}
+
+.category-menu button{transform: translate3d(100%, 0, 0); position: absolute; top: 0px; right: 0px; background:#6e6c71; }
+.category-menu button i{  display: block; width: 20px; height: 4px; border-radius: 4px; margin:4px 0; background: #ffffff; transform-origin: center center; }
+
+.slide-enter.category-menu button i:first-child{ transform: translateY(200%) rotate(45deg);}
+.slide-enter.category-menu button i:last-child{ transform: translateY(-200%) rotate(-45deg);}
+.slide-enter.category-menu button i:nth-child(even){  opacity: 0; }
+
+
+a.add{ position: fixed; top: 0px; right: 0px; width:30px; height: 30px; border-radius: 16px; background: #6dbc6d; display: block; }
+a.add::before,a.add::after{ content: ""; position: absolute; background: white; }
+a.add::before{ top:13px; left: 5px; width: 20px; height: 4px; }
+a.add::after{  top:5px; left: 13px; width: 4px; height: 20px; }
+@keyframes slideInDown {
+  from {transform: translate3d(-100%, 0, 0); visibility: visible;}
+  to {transform: translate3d(0, 0, 0);}
+}
+@keyframes slideInUp {
+  from {transform: translate3d(0, 0, 0); visibility: visible;}
+  to {transform: translate3d(-100%, 0, 0);}
+}

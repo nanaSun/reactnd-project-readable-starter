@@ -8,6 +8,7 @@ import Post from './Post'
 class App extends Component { 
   render() {
     return (<div className="container">
+    		  <header>My Blog</header>
               <Category />
               <Route path="/" exact component={PostList}/>
               <Route path="/:categoryId" exact component={PostList}/>

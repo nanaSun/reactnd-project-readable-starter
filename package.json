@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/nanaSun/reactnd-project-readable-starter#readme",
   "dependencies": {
+    "form-serialize": "^0.7.2",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "latest",
@@ -22,8 +23,8 @@
     "react-redux": "latest",
     "react-router-redux": "^4.0.8",
     "react-scripts": "latest",
-    "redux": "latest",
-    "form-serialize": "^0.7.2"
+    "react-transition-group": "^2.2.1",
+    "redux": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

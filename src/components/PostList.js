@@ -33,7 +33,6 @@ class PostList extends React.Component {
   render() {
     const {categoryId}= this.state
     let { posts } = this.props
-    console.log(categoryId,posts)
     if(categoryId!==-1&&categoryId!=="post"){
       posts=posts.filter(function(post){
         return post.category===categoryId&&!post.deleted
@@ -45,13 +44,14 @@ class PostList extends React.Component {
     }
 
     return (
-      <div className="post-list">
+      <div className="wrapper">
+        <Link className="add" to={"/post/add"}></Link>
         <ul>
      		    {posts.map((post)=>(
               <li key={post.id}><Link to={"/post/"+post.id}>{post.title}</Link></li>
             ))}
         </ul>
-        <Link to={"/post/add"}>add</Link>
+        
       </div>
     )
   }
