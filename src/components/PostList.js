@@ -44,7 +44,7 @@ class PostList extends React.Component {
     }
 
     return (
-      <div className="wrapper">
+      <div className="container">
         <Link className="add" to={"/post/add"}></Link>
         <ul>
      		    {posts.map((post)=>(

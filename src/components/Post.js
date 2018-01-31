@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom'; 
 import CommentList from './CommentList'
 import Vote from './Vote'
-import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
 import {updatePost,getPost,addPost as addNewPost,deletePost} from '../utils/api'
 import PostView from '../views/PostView'
@@ -27,8 +26,6 @@ class Post extends React.Component {
   closePostPanel = () => this.setState(() => ({ editPost: false }))
   componentWillMount = () => {
     let _=this;
-    //I don't know why I need to use this code
-    Modal.setAppElement('#root');
   	const { id } = this.props.match.params
     if(id==="add"){
       _.setState({
@@ -86,18 +83,18 @@ class Post extends React.Component {
     e.preventDefault()
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
-    
-    addNewPost({
-        timestamp:inputs.timestamp,
-        title:inputs.title,
-        body:inputs.body,
-        author:inputs.author,
-        category:inputs.category
-    }).then(function(res){
-       _.props.addPost({...res});
-       _.setState({...res,addNewPostResult:true})
-       _.closePostPanel()
-    })      
+    console.log(e.target,inputs);
+    // addNewPost({
+    //     timestamp:inputs.timestamp,
+    //     title:inputs.title,
+    //     body:inputs.body,
+    //     author:inputs.author,
+    //     category:inputs.category
+    // }).then(function(res){
+    //    _.props.addPost({...res});
+    //    _.setState({...res,addNewPostResult:true})
+    //    _.closePostPanel()
+    // })      
     
   }
   getPost = (id) => {
@@ -119,6 +116,12 @@ class Post extends React.Component {
       _.setState({...res})
     })
   }
+  editorState=()=>{
+
+  }
+  bodyOnChange=()=>{
+
+  }
   render=()=>{
     const params=this.state;
   	const {id,editPost,addNewPost,addNewPostResult} = params;
@@ -132,37 +135,26 @@ class Post extends React.Component {
     }
     let CommentTpl="",voteTpl=""
     if(id){
-      CommentTpl=(<CommentList postId={id}></CommentList>)
-      voteTpl=( <Vote postID={id} type="post"/>)
+      CommentTpl=<CommentList postId={id}></CommentList>
+      voteTpl=<Vote postID={id} type="post"/>
     }
-    return (
-     <div className="wrapper">
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={!editPost}
-          onRequestClose={this.openPostPanel}
-          contentLabel='Modal'
-        >
-          <PostView params={params}/>
-          {voteTpl}
-          {CommentTpl}
-          <button onClick={this.openPostPanel}>edit</button>
-          <button onClick={this.deletePost.bind(this,id)}>delete</button>
-        </Modal>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={editPost}
-          onRequestClose={this.closePostPanel}
-          contentLabel='Modal'
-        >
-          
-            <EditPostView params={params} addNewPost={addNewPost}  operation={addNewPost?this.createNewPost:this.updatePost}/>
-          
-        </Modal>
-      </div>
-    )
+    if(!editPost){
+      return (
+       <div className="wrapper">
+        <PostView params={params}/>
+        {voteTpl}
+        {CommentTpl}
+        <button onClick={this.openPostPanel}>edit</button>
+        <button onClick={this.deletePost.bind(this,id)}>delete</button>
+       </div>
+      )
+    }else{
+      return (
+        <div className="wrapper">
+          <EditPostView params={params} addNewPost={addNewPost}  operation={addNewPost?this.createNewPost:this.updatePost} editorState={this.editorState} bodyOnChange={this.bodyOnChange}/>
+        </div>
+      )
+    } 
   }
 }
 

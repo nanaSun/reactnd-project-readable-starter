@@ -7,12 +7,20 @@ import Post from './Post'
 
 class App extends Component { 
   render() {
-    return (<div className="container">
-    		  <header>My Blog</header>
+    return (<div>
+    		  <header className="navbar navbar-inverse">
+    		  	<div className="container">
+			      <div className="navbar-header">
+			     		<span className="navbar-brand">My blog</span>
+			      </div>
+			    </div>
+    		  </header>
               <Category />
-              <Route path="/" exact component={PostList}/>
-              <Route path="/:categoryId" exact component={PostList}/>
-              <Route path="/post/:id" exact component={Post}/>
+              <div className="container">
+	              <Route path="/" exact component={PostList}/>
+	              <Route path="/:categoryId" exact component={PostList}/>
+	              <Route path="/post/:id" exact component={Post}/>
+              </div>
             </div>);
   }
 }
