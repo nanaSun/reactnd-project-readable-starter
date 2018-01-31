@@ -13,7 +13,7 @@ const EditPostView=({params,addNewPost,operation})=>(
 		  </div>
 		  <div className="form-group">
 		    <label htmlFor="body">body</label>
-		    <MyEditor defaultValue="aaaa"/>
+		    <MyEditor defaultValue={params.body}/>
 		  </div>
 		  <div className="form-group">
 		    <label htmlFor="author">author</label>

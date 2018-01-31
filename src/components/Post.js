@@ -7,6 +7,8 @@ import serializeForm from 'form-serialize'
 import {updatePost,getPost,addPost as addNewPost,deletePost} from '../utils/api'
 import PostView from '../views/PostView'
 import EditPostView from '../views/EditPostView'
+
+
 import {updatePost as asyncUpdatePost,postCreator,removeFromList} from '../actions/Post'
 class Post extends React.Component {
   state={
@@ -84,17 +86,17 @@ class Post extends React.Component {
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
     console.log(e.target,inputs);
-    // addNewPost({
-    //     timestamp:inputs.timestamp,
-    //     title:inputs.title,
-    //     body:inputs.body,
-    //     author:inputs.author,
-    //     category:inputs.category
-    // }).then(function(res){
-    //    _.props.addPost({...res});
-    //    _.setState({...res,addNewPostResult:true})
-    //    _.closePostPanel()
-    // })      
+    addNewPost({
+        timestamp:inputs.timestamp,
+        title:inputs.title,
+        body:inputs.body,
+        author:inputs.author,
+        category:inputs.category
+    }).then(function(res){
+       _.props.addPost({...res});
+       _.setState({...res,addNewPostResult:true})
+       _.closePostPanel()
+    })      
     
   }
   getPost = (id) => {

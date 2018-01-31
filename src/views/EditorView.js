@@ -187,7 +187,6 @@ class MyEditor extends React.Component {
         />
         <div className={className} onClick={this.focus}>
           <Editor
-            value="aaaa"
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
             editorState={editorState}
@@ -199,7 +198,7 @@ class MyEditor extends React.Component {
             spellCheck={true}
           />
         </div>
-        <input type="text" name="body1" style={{display:"none"}} defaultValue={this.state.body}/>
+        <textarea name="body" value={this.state.body}></textarea>
       </div>
     );
   }
