@@ -38,7 +38,7 @@ class Comment extends React.Component {
     _.closeCommentPanel()
     updateComment(_.state.id,{
         id:_.state.id,
-        timestamp:inputs.timestamp,
+        timestamp:new Date().getTime(),
         body:inputs.body,
         author:inputs.author,
         voteScore:_.state.voteScore,
@@ -64,32 +64,22 @@ class Comment extends React.Component {
   render() {
     const params=this.state;
     const {id,editComment} = params;
-    return (
-     <div className="wrapper">
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={!editComment}
-          onRequestClose={this.openCommentPanel}
-          contentLabel='Modal'
-        >
+    if(editComment){
+       return (<div><EditCommentView comment={params} operation={this.updateComment}/></div>)
+    }else{
+      return (
+        <div>
           <CommentView comment={params}/>
-          <Vote commentid={id} type="comment"/>
-          <button onClick={this.openCommentPanel}>edit</button>
-          <button onClick={this.deleteComment.bind(this,id)}>delete</button>
-            
-        </Modal>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={editComment}
-          onRequestClose={this.closeCommentPanel}
-          contentLabel='Modal'
-        >
-            <EditCommentView comment={params} operation={this.updateComment}/> 
-        </Modal>
-      </div>
-    )
+          <div className="row">
+            <p className="col-xs-6">
+              <i className="btn btn-success" onClick={this.openCommentPanel}>edit</i>
+              <i className="btn btn-warning" onClick={this.deleteComment.bind(this,id)}>delete</i>
+            </p>
+            <Vote commentid={id} type="comment"/>
+          </div>
+        </div>
+      )
+    }
   }
 }
 

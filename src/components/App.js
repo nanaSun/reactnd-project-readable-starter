@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {Route} from 'react-router-dom';
+import {Route,Link} from 'react-router-dom';
 import Category from './Category'
 import PostList from './PostList'
 import Post from './Post'
@@ -11,7 +11,7 @@ class App extends Component {
     		  <header className="navbar navbar-inverse">
     		  	<div className="container">
 			      <div className="navbar-header">
-			     		<span className="navbar-brand">My blog</span>
+			     		<Link to={'/'} className="navbar-brand">My blog</Link>
 			      </div>
 			    </div>
     		  </header>

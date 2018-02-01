@@ -142,12 +142,16 @@ class Post extends React.Component {
     }
     if(!editPost){
       return (
-       <div className="wrapper">
-        <PostView params={params}/>
-        {voteTpl}
+       <div className="wrapper"> 
+        <PostView params={params}/>     
+        <div className="row post-edit-bar">
+            <p className="col-xs-6">
+              <i className="btn btn-success" onClick={this.openPostPanel}>edit</i>
+              <i className="btn btn-danger" onClick={this.deletePost.bind(this,id)}>delete</i>
+            </p>
+            {voteTpl}
+        </div>
         {CommentTpl}
-        <button onClick={this.openPostPanel}>edit</button>
-        <button onClick={this.deletePost.bind(this,id)}>delete</button>
        </div>
       )
     }else{

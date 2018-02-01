@@ -20,6 +20,7 @@
     "form-serialize": "^0.7.2",
     "html-to-draftjs": "^1.1.2",
     "html-to-text": "^3.3.0",
+    "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-icons": "latest",

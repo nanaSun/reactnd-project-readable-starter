@@ -198,7 +198,7 @@ class MyEditor extends React.Component {
             spellCheck={true}
           />
         </div>
-        <textarea name="body" value={this.state.body}></textarea>
+        <textarea name="body" style={{display:"none"}} value={this.state.body}></textarea>
       </div>
     );
   }

@@ -25,10 +25,10 @@ class CommentList extends React.Component {
     const { postId,timestamp} = this.props
     const inputs = serializeForm(e.target, { hash: true })
     addComment({
-        timestamp: timestamp,
-        author: inputs.nickname,
+        timestamp: new Date().getTime(),
+        author: inputs.author,
         parentId: postId,
-        body:inputs.newComment
+        body:inputs.body
     }).then(function(res){
        _.props.addComment({...res}); 
        _.setState({...res})
@@ -41,18 +41,27 @@ class CommentList extends React.Component {
     })
     return (
     <div className="books">
-      <ul className="list-comments">
+      <h3>COMMENTS:</h3>
+      <form onSubmit={this.addComment}>
+        <div className="form-group">
+          <label htmlFor="author">Nickname</label>
+          <input className="form-control" type="text" name="author"/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="body">Your Comment:</label>
+          <input className="form-control" type="text" name="body"/>
+        </div>
+        <button type="submit" className="form-control">SUBMIT</button>
+      </form>
+      <h4>OTHER COMMENTS:</h4>
+      <ul className="list-comments  list-unstyled">
           {comments.length>0&&comments.map((comment)=>(
-            <div   key={comment.id}>
+            <li key={comment.id}>
             <Comment CommentId={comment.id}/>
-            </div>
+            </li>
           ))}
       </ul>
-      <form onSubmit={this.addComment}>
-        <input name="nickname"/>
-        <input name="newComment"/>
-        <button>addComment</button>
-      </form>
+      
     </div>
     )
   }

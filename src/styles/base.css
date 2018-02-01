@@ -1,3 +1,5 @@
+.post-body{ margin: 15px 0; }
+
 .category-menu{ position: fixed; top:0px; left: 0px;  background: #eee; text-align: center; width:120px; }
 .category-menu ul{ position: relative; }
 .category-menu li{height: 44px; line-height: 44px; }
@@ -23,6 +25,12 @@ a.add::before,a.add::after{ content: ""; position: absolute; background: white; 
 a.add::before{ top:13px; left: 5px; width: 20px; height: 4px; }
 a.add::after{  top:5px; left: 13px; width: 4px; height: 20px; }
 
+.vote-bar i{ vertical-align: middle; margin:0 10px; }
+.vote-icon{  height: 24px; width: 24px; display: inline-block; background-size: 100% 100%; }
+.vote-icon.like{ background-image: url(../images/likebefore.png); }
+.vote-icon.dislike{ background-image: url(../images/dislikebefore.png); }
+.vote-icon.like.after{ background-image: url(../images/likeafter.png);}
+.vote-icon.dislike.after{ background-image: url(../images/dislikeafter.png);}
 @keyframes slideInDown {
   from {transform: translate3d(-100%, 0, 0); visibility: visible;}
   to {transform: translate3d(0, 0, 0);}
