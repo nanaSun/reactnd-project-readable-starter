@@ -1,29 +1,22 @@
+/*header*/
+.navbar-toggle i{  display: block; width: 20px; height: 2px; border-radius: 4px; margin-top:2px; background: #ffffff; transform-origin: center center; }
+.navbar-collapse{ height: 1px; overflow: hidden;}
+.slide-enter.slide-enter-active .navbar-collapse{animation: slideInDown .3s 0s ease-in-out both;}
+.slide-exit .navbar-collapse {height: 175px; }
+.slide-exit.slide-exit-active .navbar-collapse{ animation: slideInUp .3s 0s ease-in-out both;}
+@media (min-width: 768px){
+ .navbar-collapse{ height: 50px; }
+}
+/*postlist*/
 .post-body{ margin: 15px 0; }
-
-.category-menu{ position: fixed; top:0px; left: 0px;  background: #eee; text-align: center; width:120px; }
-.category-menu ul{ position: relative; }
-.category-menu li{height: 44px; line-height: 44px; }
-.category-menu li a{color: #fff;}
-.category-menu li:nth-child(odd){ background: #f14d69; }
-.category-menu li:nth-child(even){ background: #9c47bd; }
-
-.slide-enter.category-menu{transform: translate3d(-100%, 0, 0);}
-.slide-enter.slide-enter-active.category-menu{animation: slideInDown .3s 0s ease-in-out both;}
-
-.slide-exit.category-menu{ transform: translate3d(0, 0, 0);}
-.slide-exit.slide-exit-active.category-menu{ animation: slideInUp .3s 0s ease-in-out both;}
-
-.category-menu button{transform: translate3d(100%, 0, 0); position: absolute; top: 0px; right: 0px; background:#6e6c71; }
-.category-menu button i{  display: block; width: 20px; height: 4px; border-radius: 4px; margin:4px 0; background: #ffffff; transform-origin: center center; }
-
-.slide-enter.category-menu button i:first-child{ transform: translateY(200%) rotate(45deg);}
-.slide-enter.category-menu button i:last-child{ transform: translateY(-200%) rotate(-45deg);}
-.slide-enter.category-menu button i:nth-child(even){  opacity: 0; }
-
-a.add{ position: fixed; top: 0px; right: 0px; width:30px; height: 30px; border-radius: 16px; background: #6dbc6d; display: block; }
-a.add::before,a.add::after{ content: ""; position: absolute; background: white; }
-a.add::before{ top:13px; left: 5px; width: 20px; height: 4px; }
-a.add::after{  top:5px; left: 13px; width: 4px; height: 20px; }
+.sorting-bar{ cursor: pointer; }
+.sorting-bar th i{ width: 30px; height: 30px; display: inline-block; vertical-align: middle; background: url(../images/sort.png) no-repeat left center; background-size: 30px; }
+.sorting-bar th.sorting-asc i{ background: url(../images/sort-asc.png) no-repeat left center;  background-size: 30px;}
+.sorting-bar th.sorting-des i{ background: url(../images/sort-des.png) no-repeat left center;  background-size: 30px;}
+/*post*/
+.post-view{ margin-bottom: 15px; }
+.post-info{ color: #888; font-size: 1.3em;}
+.post-edit-bar .btn,.list-comments .btn{ margin-right: 15px; }
 
 .vote-bar i{ vertical-align: middle; margin:0 10px; }
 .vote-icon{  height: 24px; width: 24px; display: inline-block; background-size: 100% 100%; }
@@ -31,11 +24,15 @@ a.add::after{  top:5px; left: 13px; width: 4px; height: 20px; }
 .vote-icon.dislike{ background-image: url(../images/dislikebefore.png); }
 .vote-icon.like.after{ background-image: url(../images/likeafter.png);}
 .vote-icon.dislike.after{ background-image: url(../images/dislikeafter.png);}
+
+/*comebackbtn*/
+.category-path{ line-height: 1.5; display: inline-block; color: #fff;background: #999; padding: 0 10px; vertical-align: middle; white-space: nowrap; border-radius: 2px; text-transform: uppercase;}
+/*category animation*/
 @keyframes slideInDown {
-  from {transform: translate3d(-100%, 0, 0); visibility: visible;}
-  to {transform: translate3d(0, 0, 0);}
+  from { height: 175px; visibility: visible;}
+  to {height: 1px;}
 }
 @keyframes slideInUp {
-  from {transform: translate3d(0, 0, 0); visibility: visible;}
-  to {transform: translate3d(-100%, 0, 0);}
+  from {height:  1px;visibility: visible;}
+  to {height:175px; }
 }

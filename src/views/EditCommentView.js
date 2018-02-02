@@ -2,7 +2,6 @@ import React from 'react'
 const EditCommentView=({comment,updateComment,operation})=>(
   <li>
 	 <form onSubmit={operation} className="col-md-12">
-		  <input type="hidden" name="timestamp" defaultValue={new Date().getTime()}/>
 		  <div className="form-group">
 		    <label htmlFor="author">author</label>
 		    <input className="form-control" type="text" name="author" defaultValue={comment.author}/>

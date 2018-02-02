@@ -166,7 +166,6 @@ app.get('/posts', (req, res) => {
 })
 
 app.post('/posts', bodyParser.json(), (req, res) => {
-  console.log(req.body)
     posts.add(req.token, req.body)
       .then(
           (data) => res.send(data),

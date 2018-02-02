@@ -44,19 +44,24 @@ class Category extends React.Component {
   render() {
     const { categories,show } = this.state
     return (
-    <Slide in={this.state.show}>
-        <div className="category-menu  slide-exit slide-exit-active ">      
-          <ul>
-            <li><Link to={'/'}>home</Link></li>
-            {categories.map((category)=>(
-            <li key={category.path}><Link to={'/'+category.path}>{category.name}</Link></li>
-            ))}
-          </ul>
-          <button onClick={() => this.handleToggle()}>
-              <i></i>
-              <i></i>
-              <i></i>
-          </button>
+    <Slide in={show}>
+          <div className="container">
+              <div className="navbar-header">
+                <Link to={'/'} className="navbar-brand">My blog</Link>
+                <button className="navbar-toggle" onClick={() => this.handleToggle()}>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </button>
+              </div>
+              <nav className="navbar-collapse" >
+                <ul className="nav navbar-nav">
+                <li><Link to={'/'}>home</Link></li>
+                {categories.map((category)=>(
+                <li key={category.path}><Link to={'/'+category.path}>{category.name}</Link></li>
+                ))}
+                </ul>
+              </nav>
         </div>
     </Slide>
     )

@@ -1,7 +1,8 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import MyEditor from './EditorView';
 import TimeFieldView from './TimeFieldView';
-const EditPostView=({params,addNewPost,operation})=>(
+const EditPostView=({params,addNewPost,operation,closePostPanel})=>(
 		 <form onSubmit={operation} className="col-md-12">
 		  <div className="form-group">
 		    <label htmlFor="title">title</label>
@@ -20,7 +21,14 @@ const EditPostView=({params,addNewPost,operation})=>(
 		    <label htmlFor="body">body</label>
 		    <MyEditor defaultValue={params.body}/>
 		  </div>
-		  <button type="submit" className="btn btn-default">{addNewPost?"add":"update"}</button>
+		  <div className="clearfix">
+		  		{addNewPost?(
+					<Link className="btn btn-default pull-left" to={'/'}>back</Link>
+		  		):(
+		  			<div className="btn btn-default pull-left" onClick={closePostPanel}>back</div>
+		  		)}
+		  		<button type="submit" className="btn btn-default pull-right">{addNewPost?"add":"update"}</button>
+		  </div>
 		</form>
 )
 export default EditPostView

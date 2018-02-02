@@ -22,40 +22,40 @@ class Post extends React.Component {
     deleted:false,
     editPost:false,
     addNewPost:false,
-    addNewPostResult:false
+    RedirectURL:''
   }
+  //control the edit panel
   openPostPanel = () => this.setState(() => ({ editPost: true }))
   closePostPanel = () => this.setState(() => ({ editPost: false }))
+  //when create new post, need to set some state
+  setStateToCreate = () =>{
+      this.setState({
+        editPost:true,
+        addNewPost:true,
+        RedirectURL:''
+      })
+  }
   componentWillMount = () => {
     let _=this;
   	const { id } = this.props.match.params
     if(id==="add"){
-      _.setState({
-        editPost:true,
-        addNewPost:true,
-        addNewPostResult:false
-      })
+      _.setStateToCreate()
     }else{
       _.getPost(id)
     }
   	
   }
   componentWillReceiveProps = (nextProps) =>{
-    console.log(nextProps.match.params.id ,this.props.match.params.id);
     if(nextProps.match.params.id !== this.props.match.params.id){
       const { id } = nextProps.match.params
       let _=this;
       if(id==="add"){
-        _.setState({
-          editPost:true,
-          addNewPost:true,
-          addNewPostResult:false
-        })
+         _.setStateToCreate()
       }else{
         _.setState({
           editPost:false,
           addNewPost:false,
-          addNewPostResult:false
+          RedirectURL:''
         })
         _.getPost(id)
       }
@@ -63,7 +63,6 @@ class Post extends React.Component {
   }
   updatePost = (e) => {
     e.preventDefault()
-     console.log(this)
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
     _.closePostPanel()
@@ -85,7 +84,6 @@ class Post extends React.Component {
     e.preventDefault()
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
-    console.log(e.target,inputs);
     addNewPost({
         timestamp:inputs.timestamp,
         title:inputs.title,
@@ -94,8 +92,8 @@ class Post extends React.Component {
         category:inputs.category
     }).then(function(res){
        _.props.addPost({...res});
-       _.setState({...res,addNewPostResult:true})
-       _.closePostPanel()
+       //after create successful, we need to redirect
+       _.setState({...res,RedirectURL:'/post/'+res.postId})
     })      
     
   }
@@ -104,36 +102,30 @@ class Post extends React.Component {
     if(id in _.props.Posts){
       _.setState({..._.props.Posts[id]})
     }else{
+      //when the url is not from indexpage, we need to fetch the info from the api
       getPost(id).then(function(res){
         _.props.updatePost(id,{...res})
-        _.setState({...res})
+          if("id" in res){
+            _.setState({...res})
+          }else{
+            _.setState({RedirectURL:'/'})
+          }
       })
     }
   }
   deletePost=(e)=>{ 
     var _=this,id=e;
-    console.log(id)
     deletePost(id).then(function(res){
       _.props.deletePost(res.id,res)
-      _.setState({...res})
+      _.setState({RedirectURL:'/'})
     })
-  }
-  editorState=()=>{
-
-  }
-  bodyOnChange=()=>{
-
   }
   render=()=>{
     const params=this.state;
-  	const {id,editPost,addNewPost,addNewPostResult} = params;
-    console.log("addNewPostResult",addNewPostResult);
-    if(addNewPostResult){
-      let directURl="/post/"+id
-      return <Redirect push to={directURl} />;
-    }
-    if((id===""||params.deleted)&&!editPost){
-      return <Redirect push to="/post" />; 
+  	const {id,editPost,addNewPost,RedirectURL} = params;
+    //if RedirectURL is set , here will redirect
+    if(RedirectURL!==""){
+      return <Redirect to="/" />
     }
     let CommentTpl="",voteTpl=""
     if(id){
@@ -157,7 +149,7 @@ class Post extends React.Component {
     }else{
       return (
         <div className="wrapper">
-          <EditPostView params={params} addNewPost={addNewPost}  operation={addNewPost?this.createNewPost:this.updatePost} editorState={this.editorState} bodyOnChange={this.bodyOnChange}/>
+          <EditPostView params={params} addNewPost={addNewPost}  operation={addNewPost?this.createNewPost:this.updatePost} closePostPanel={ this.closePostPanel}/>
         </div>
       )
     } 

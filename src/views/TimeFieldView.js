@@ -1,5 +1,4 @@
 import React from 'react'
-import MyEditor from './EditorView';
 import moment from 'moment';
 class TimeFieldView extends React.Component {
 	constructor(props) {
@@ -9,7 +8,7 @@ class TimeFieldView extends React.Component {
 		}
 	}
 	changeToDate(timestamp){
-		return moment(parseInt(timestamp)).format('YYYY-MM-DD HH:mm:ss')
+		return moment(parseInt(timestamp,10)).format('YYYY-MM-DD HH:mm:ss')
 	}	
 	render(){
 	  let {timestamp}=this.state;

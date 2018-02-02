@@ -22,11 +22,12 @@ class CommentList extends React.Component {
   addComment = (e) => {
     e.preventDefault()
     var _=this;
-    const { postId,timestamp} = this.props
+    const { postId } = this.props
     const inputs = serializeForm(e.target, { hash: true })
     addComment({
         timestamp: new Date().getTime(),
         author: inputs.author,
+        voteScore:0,
         parentId: postId,
         body:inputs.body
     }).then(function(res){
@@ -56,9 +57,7 @@ class CommentList extends React.Component {
       <h4>OTHER COMMENTS:</h4>
       <ul className="list-comments  list-unstyled">
           {comments.length>0&&comments.map((comment)=>(
-            <li key={comment.id}>
-            <Comment CommentId={comment.id}/>
-            </li>
+            <Comment key={comment.id} CommentId={comment.id}/>
           ))}
       </ul>
       

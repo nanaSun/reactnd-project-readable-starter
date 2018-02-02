@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Modal from 'react-modal'
 import serializeForm from 'form-serialize'
 import {updateComment,deleteComment} from '../utils/api'
 import Vote from './Vote'
@@ -24,15 +23,12 @@ class Comment extends React.Component {
   closeCommentPanel = () => this.setState(() => ({ editComment: false }))
   componentWillMount = () => {
     let _=this;
-    //I don't know why I need to use this code
-    Modal.setAppElement('#root');
     const { CommentId } = this.props
     _.getComment(CommentId)
     
   }
   updateComment = (e) => {
     e.preventDefault()
-     console.log(this)
     var _=this;
     const inputs = serializeForm(e.target, { hash: true })
     _.closeCommentPanel()
@@ -51,9 +47,7 @@ class Comment extends React.Component {
   }
   deleteComment=(e)=>{
     var _=this,id=e;
-    console.log(id)
     deleteComment(id).then(function(res){
-      console.log(res)
       _.props.deleteComment(res.id,res)
     })
   }

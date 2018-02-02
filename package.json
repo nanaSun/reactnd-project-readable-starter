@@ -29,7 +29,8 @@
     "react-router-redux": "^4.0.8",
     "react-scripts": "latest",
     "react-transition-group": "^2.2.1",
-    "redux": "latest"
+    "redux": "latest",
+    "sort-by": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

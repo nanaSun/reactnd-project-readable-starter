@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {Editor, EditorState,RichUtils,ContentState,convertToRaw} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
@@ -54,8 +53,7 @@ const BLOCK_TYPES = [
   {label: 'H6', style: 'header-six'},
   {label: 'Blockquote', style: 'blockquote'},
   {label: 'UL', style: 'unordered-list-item'},
-  {label: 'OL', style: 'ordered-list-item'},
-  {label: 'Code Block', style: 'code-block'},
+  {label: 'OL', style: 'ordered-list-item'}
 ];
 
 const BlockStyleControls = (props) => {
