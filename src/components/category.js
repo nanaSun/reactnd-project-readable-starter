@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from 'react-router-dom';
 import {getCategories} from '../utils/api'
 import { CSSTransition } from 'react-transition-group'
-
 const Slide = ({ children, ...props }) => (
   <CSSTransition 
     {...props}
