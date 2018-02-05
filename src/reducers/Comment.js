@@ -20,9 +20,14 @@ export default function comments (state = initialState, action) {
             	[action.id]:action.item
             };
         case DELETE_COMMENT://deleted=true
+            let comments={}
+            for(var i in state){
+                if(i!==action.id){
+                    comments[i]=state[i]
+                }
+            }
             return {
-            	...state,
-            	[action.id]:action.item
+            	...comments
             };
         case UPDATE_COMMENT:
             return {

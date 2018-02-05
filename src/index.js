@@ -8,5 +8,6 @@ import store from './store';
 import './styles/base.css';
 
 
+
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>,document.getElementById('root'));
 registerServiceWorker();

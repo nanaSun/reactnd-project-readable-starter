@@ -1,16 +1,20 @@
 import React from 'react'
 import {Link } from 'react-router-dom'
-import {getAllPosts} from '../utils/api'
+import {getAllPosts,deletePost} from '../utils/api'
 import {connect} from 'react-redux'
 import sortBy from  'sort-by'
 import moment from 'moment';
+import ReactLoading from 'react-loading';
+import Vote from './Vote'
 /*actions*/
-import {initPosts} from '../actions/Post'
+import {initPosts,removeFromList} from '../actions/Post'
 
 class PostList extends React.Component {
   state={
     categoryId:-1,
-    sortKey:'id'
+    sortKey:'id',
+    loading:true,
+    bars:["#","title","time","vote","author","comment"]
   }
   componentWillMount(){
     let _=this
@@ -22,17 +26,26 @@ class PostList extends React.Component {
     }
     getAllPosts().then(function(res){
        _.props.getPosts(res)
+       _.setState({
+          loading:false
+       })
     })
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.match.params.categoryId !== this.props.match.params.categoryId){
       const {categoryId}=nextProps.match.params
       this.setState({
-        categoryId:categoryId
+        categoryId:categoryId,
+        loading:false
       })
     }
   }
   setSortKey=(sortKey)=>{
+      if(sortKey==="#"){
+        sortKey="id"
+      }else if(sortKey==="-#"){
+        sortKey="-id"
+      }
       if(sortKey===this.state.sortKey){
         sortKey='-'+sortKey
       }
@@ -41,8 +54,15 @@ class PostList extends React.Component {
       })
 
   }
+  deletePost=(id)=>{ 
+    var _=this,id=id;
+    deletePost(id).then(function(res){
+      _.props.deletePost(res.id,res)
+      _.setState({RedirectURL:'/'})
+    })
+  }
   render() {
-    const {categoryId,sortKey}= this.state
+    const {categoryId,sortKey,bars,loading}= this.state
     let { posts } = this.props
     if(categoryId!==-1&&categoryId!=="post"){
       posts=posts.filter(function(post){
@@ -56,35 +76,50 @@ class PostList extends React.Component {
     if(sortKey){
         posts.sort(sortBy(sortKey));
     }
-    return (
-      <div>
-        <div className="clearfix">
-            <Link className="btn btn-success pull-right " to={"/post/add"}>New Post</Link>
+    if(!loading){
+      return (
+        <div>
+          <div className="clearfix">
+              <Link className="btn btn-success pull-right " to={"/post/add"}>New Post</Link>
+          </div>
+          <table className="table table-hover post-body">
+              <thead>
+                <tr className="sorting-bar">
+                  {bars.map((bar,index)=>(
+                    <th key={"bar"+index} className={sortKey==={bar}?"sorting-asc":sortKey===`-${bar}`?"sorting-des":""} onClick={()=>{this.setSortKey(bar)}}>{bar.toUpperCase()}<i></i></th>
+                  ))}
+                  <th>OPERATION</th>
+                </tr>
+              </thead>
+              <tbody>
+       		    {posts.map((post,index)=>(
+                <tr key={post.id}>
+                    <th>{index+1}</th>
+                    <td><Link to={"/post/"+post.category+"/"+post.id}>{post.title}</Link></td>
+                    <td>{moment(parseInt(post.timestamp,10)).format('MMM DD, YYYY')}</td>
+                    <td>{post.voteScore}</td>
+                    <td>{post.author}</td>
+                    <td>{post.commentCount}</td>
+                    <td className="row">
+                      <p className="col-xs-6  post-edit-bar">
+                        <Link to={'/post/'+post.category+"/"+post.id+'/edit'} className="btn btn-success">edit</Link>
+                        <i className="btn btn-danger" onClick={this.deletePost.bind(this,post.id)}>delete</i>
+                      </p>
+                      <Vote postID={post.id} type="post"/>
+                    </td>
+                </tr>
+              ))}
+              </tbody>
+          </table>
         </div>
-        <table className="table table-hover post-body">
-            <thead>
-              <tr className="sorting-bar">
-                <th className={sortKey==="id"?"sorting-asc":sortKey==="-id"?"sorting-des":""} onClick={()=>{this.setSortKey("id")}}>#<i></i></th>
-                <th className={sortKey==="title"?"sorting-asc":sortKey==="-title"?"sorting-des":""} onClick={()=>{this.setSortKey("title")}}>TITLE<i></i></th>
-                <th className={sortKey==="timestamp"?"sorting-asc":sortKey==="-timestamp"?"sorting-des":""}  onClick={()=>{this.setSortKey("timestamp")}}>TIME<i></i></th>
-                <th className={sortKey==="voteScore"?"sorting-asc":sortKey==="-voteScore"?"sorting-des":""}  onClick={()=>{this.setSortKey("voteScore")}}>VOTE<i></i></th>
-                <th className={sortKey==="author"?"sorting-asc":sortKey==="-author"?"sorting-des":""}  onClick={()=>{this.setSortKey("author")}}>AUTHOR<i></i></th>
-              </tr>
-            </thead>
-            <tbody>
-     		    {posts.map((post,index)=>(
-              <tr key={post.id}>
-                  <th>{index}</th>
-                  <td><Link to={"/post/"+post.id}>{post.title}</Link></td>
-                  <td>{moment(parseInt(post.timestamp,10)).format('MMM DD, YYYY')}</td>
-                  <td>{post.voteScore}</td>
-                  <td>{post.author}</td>
-              </tr>
-            ))}
-            </tbody>
-        </table>
-      </div>
-    )
+      )
+    }else{
+      return(
+        <div className="loading">
+          <ReactLoading type='bubbles' color='#222'/>
+        </div>
+      )
+    }
   }
 }
 function mapStateToProps(state,props){
@@ -96,7 +131,8 @@ function mapStateToProps(state,props){
 }
 function mapDispatchToProps(dispatch){
   return{
-    getPosts:(items)=>dispatch(initPosts({item:items}))
+    getPosts:(items)=>dispatch(initPosts({item:items})),
+    deletePost:(id,data)=>dispatch(removeFromList({id:id,item:data}))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(PostList)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
 import Category from './Category'
 import PostList from './PostList'
+import PostEdit from './PostEdit'
 import Post from './Post'
 
 class App extends Component { 
@@ -13,7 +14,9 @@ class App extends Component {
             <div className="container">
               <Route path="/" exact component={PostList}/>
               <Route path="/:categoryId" exact component={PostList}/>
-              <Route path="/post/:id" exact component={Post}/>
+              <Route path="/post/add" exact component={PostEdit}/>
+              <Route path="/post/:categoryId/:id/edit" exact component={PostEdit}/>
+              <Route path="/post/:categoryId/:id" exact component={Post}/>
             </div>
           </div>);
   }

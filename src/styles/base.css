@@ -1,3 +1,6 @@
+/*loading*/
+.loading{ position: fixed; top: 0px;left: 0px;width: 100%;background: rgba(0,0,0,0.3);display: flex;height: 100%;align-items: center;z-index: 100;  }
+.loading>div{ margin:0 auto; }
 /*header*/
 .navbar-toggle i{  display: block; width: 20px; height: 2px; border-radius: 4px; margin-top:2px; background: #ffffff; transform-origin: center center; }
 .navbar-collapse{ height: 1px; overflow: hidden;}
@@ -13,10 +16,17 @@
 .sorting-bar th i{ width: 30px; height: 30px; display: inline-block; vertical-align: middle; background: url(../images/sort.png) no-repeat left center; background-size: 30px; }
 .sorting-bar th.sorting-asc i{ background: url(../images/sort-asc.png) no-repeat left center;  background-size: 30px;}
 .sorting-bar th.sorting-des i{ background: url(../images/sort-des.png) no-repeat left center;  background-size: 30px;}
+.post-body .col-xs-6 { padding: 0px; margin:0px; }
+/*comment*/
+.comment-sort { padding: 15px 0px; }
+.comment-sort i{ cursor: pointer; margin-right: 15px; }
+.comment-sort .vote-sorting-asc {color: blue}
+.comment-sort .vote-sorting-des {color: green}
+
 /*post*/
 .post-view{ margin-bottom: 15px; }
 .post-info{ color: #888; font-size: 1.3em;}
-.post-edit-bar .btn,.list-comments .btn{ margin-right: 15px; }
+.post-edit-bar .btn,.list-comments .btn{ margin-right: 6px; }
 
 .vote-bar i{ vertical-align: middle; margin:0 10px; }
 .vote-icon{  height: 24px; width: 24px; display: inline-block; background-size: 100% 100%; }

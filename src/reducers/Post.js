@@ -20,9 +20,14 @@ export default function posts (state = initialState, action) {
             	[action.id]:action.item
             };
         case DELETE_POST://deleted=true
+            let posts={}
+            for(var i in state){
+                if(i!==action.id){
+                    posts[i]=state[i]
+                }
+            }
             return {
-            	...state,
-            	[action.id]:action.item
+                ...posts
             };
         case UPDATE_POST:
             return {

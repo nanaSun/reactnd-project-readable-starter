@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import MyEditor from './EditorView';
 import TimeFieldView from './TimeFieldView';
-const EditPostView=({params,addNewPost,operation,closePostPanel})=>(
+const EditPostView=({params,addNewPost,operation})=>(
 		 <form onSubmit={operation} className="col-md-12">
 		  <div className="form-group">
 		    <label htmlFor="title">title</label>
@@ -25,7 +25,7 @@ const EditPostView=({params,addNewPost,operation,closePostPanel})=>(
 		  		{addNewPost?(
 					<Link className="btn btn-default pull-left" to={'/'}>back</Link>
 		  		):(
-		  			<div className="btn btn-default pull-left" onClick={closePostPanel}>back</div>
+		  			<Link className="btn btn-default pull-left" to={'/post/'+params.id}>back</Link>
 		  		)}
 		  		<button type="submit" className="btn btn-default pull-right">{addNewPost?"add":"update"}</button>
 		  </div>

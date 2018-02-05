@@ -23,12 +23,12 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-icons": "latest",
-    "react-loading": "latest",
-    "react-redux": "latest",
+    "react-loading": "^1.0.3",
+    "react-redux": "^5.0.6",
     "react-router-redux": "^4.0.8",
-    "react-scripts": "latest",
+    "react-scripts": "^1.1.0",
     "react-transition-group": "^2.2.1",
-    "redux": "latest",
+    "redux": "^3.7.2",
     "sort-by": "^1.2.0"
   },
   "scripts": {
