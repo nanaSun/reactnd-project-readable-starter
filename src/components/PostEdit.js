@@ -1,11 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { Redirect } from 'react-router-dom'; 
-import CommentList from './CommentList'
-import Vote from './Vote'
+import { Redirect } from 'react-router-dom';
 import serializeForm from 'form-serialize'
-import {updatePost,getPost,addPost as addNewPost,deletePost} from '../utils/api'
-import PostView from '../views/PostView'
+import {updatePost,getPost,addPost as addNewPost} from '../utils/api'
 import EditPostView from '../views/EditPostView'
 import ReactLoading from 'react-loading';
 
@@ -20,14 +17,12 @@ class Post extends React.Component {
     category:'',
     voteScore:0,
     deleted:false,
-    editPost:false,
     addNewPost:false,
     RedirectURL:''
   }
   //when create new post, need to set some state
   setStateToCreate = () =>{
       this.setState({
-        editPost:true,
         addNewPost:true,
         RedirectURL:''
       })
@@ -35,7 +30,7 @@ class Post extends React.Component {
   componentWillMount = () => {
     let _=this;
   	const { id } = this.props.match.params
-    if(typeof id=="undefined"){
+    if(typeof id==="undefined"){
       _.setStateToCreate()
     }else{
       _.getPost(id)
@@ -50,7 +45,6 @@ class Post extends React.Component {
          _.setStateToCreate()
       }else{
         _.setState({
-          editPost:true,
           addNewPost:false,
           RedirectURL:''
         })
@@ -111,7 +105,7 @@ class Post extends React.Component {
   }
   render=()=>{
     const params=this.state;
-  	const {id,editPost,addNewPost,RedirectURL} = params;
+  	const {id,addNewPost,RedirectURL} = params;
     if(RedirectURL!==""){
       return <Redirect to={RedirectURL} />
     }

@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import { Redirect,Link } from 'react-router-dom'; 
 import CommentList from './CommentList'
 import Vote from './Vote'
-import {getPost} from '../utils/api'
+import {getPost,deletePost} from '../utils/api'
 import PostView from '../views/PostView'
 
 
-import {updatePost as asyncUpdatePost,postCreator,removeFromList} from '../actions/Post'
+import {updatePost as asyncUpdatePost,removeFromList} from '../actions/Post'
 class Post extends React.Component {
   state={
     id:'',
@@ -22,13 +22,13 @@ class Post extends React.Component {
   }
   componentWillMount = () => {
     let _=this;
-  	const { categoryId,id } = this.props.match.params
+  	const {id } = this.props.match.params
     _.getPost(id)
   	
   }
   componentWillReceiveProps = (nextProps) =>{
     if(nextProps.match.params.id !== this.props.match.params.id){
-      const { categoryId,id } = nextProps.match.params
+      const { id } = nextProps.match.params
       let _=this;
       _.setState({
         RedirectURL:''
@@ -52,13 +52,22 @@ class Post extends React.Component {
       })
     }
   }
+  deletePost=(id)=>{ 
+    var _=this;
+    deletePost(id).then(function(res){
+      _.setState({deleted:true})
+      _.props.deletePost(res.id,res)
+      _.setState({RedirectURL:'/'})
+    })
+  }
   render=()=>{
     const params=this.state;
-  	const {id,RedirectURL} = params;
+  	const {id,RedirectURL,deleted} = params;
     //if RedirectURL is set , here will redirect
     if(RedirectURL!==""){
       return <Redirect to="/" />
     }
+    if(deleted) return (<div>waiting</div>)
     let CommentTpl="",voteTpl=""
     if(id){
       CommentTpl=<CommentList postId={id}></CommentList>
@@ -66,10 +75,12 @@ class Post extends React.Component {
     }
     return (
      <div className="wrapper"> 
+      <div><Link className="btn btn-default" to={'/'}>back</Link></div>
       <PostView params={params}/>     
       <div className="row post-edit-bar">
           <p className="col-xs-6 text-left">
-          <Link to={`/post/${params.id}/edit`} className="btn btn-success">edit</Link>
+          <Link to={`/post/${id}/edit`} className="btn btn-success">edit</Link>
+          <i className="btn btn-danger" onClick={this.deletePost.bind(this,id)}>delete</i>
           </p>
           {voteTpl}
       </div>
@@ -87,6 +98,7 @@ function mapStateToProps(state,props){
 function mapDispatchToProps(dispatch){
   return{
     updatePost:(id,data)=>dispatch(asyncUpdatePost({id:id,item:data})),
+    deletePost:(id,data)=>dispatch(removeFromList({id:id,item:data}))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post);

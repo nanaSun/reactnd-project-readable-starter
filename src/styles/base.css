@@ -13,15 +13,10 @@
 /*postlist*/
 .post-body{ margin: 15px 0; }
 .sorting-bar{ cursor: pointer; }
-.sorting-bar th i{ width: 30px; height: 30px; display: inline-block; vertical-align: middle; background: url(../images/sort.png) no-repeat left center; background-size: 30px; }
-.sorting-bar th.sorting-asc i{ background: url(../images/sort-asc.png) no-repeat left center;  background-size: 30px;}
-.sorting-bar th.sorting-des i{ background: url(../images/sort-des.png) no-repeat left center;  background-size: 30px;}
+.sorting-bar i{ width: 30px; height: 30px; display: inline-block; vertical-align: middle; background: url(../images/sort.png) no-repeat left center; background-size: 30px; }
+.sorting-bar .sorting-asc i{ background: url(../images/sort-asc.png) no-repeat left center;  background-size: 30px;}
+.sorting-bar .sorting-des i{ background: url(../images/sort-des.png) no-repeat left center;  background-size: 30px;}
 .post-body .col-xs-6 { padding: 0px; margin:0px; }
-/*comment*/
-.comment-sort { padding: 15px 0px; }
-.comment-sort i{ cursor: pointer; margin-right: 15px; }
-.comment-sort .vote-sorting-asc {color: blue}
-.comment-sort .vote-sorting-des {color: green}
 
 /*post*/
 .post-view{ margin-bottom: 15px; }

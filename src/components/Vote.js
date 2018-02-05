@@ -18,8 +18,10 @@ class Vote extends React.Component {
       commentid:commentid,
       type:type
     })
+
   }
   getVoteNum=()=>{
+
     if(this.state.type==="post"){
         return this.props.Posts[this.state.postID].voteScore
     }else{
@@ -30,28 +32,31 @@ class Vote extends React.Component {
     let _=this;
     let votetypes=["upVote","downVote"];
     let votetype=!_.state[votetypes[votetypeid]]?votetypes[votetypeid]:votetypes[1-votetypeid];
+    let nowstate=_.state[votetypes[votetypeid]]
     if(_.state.type==="post"){
         postVote(_.state.postID,{option:votetype}).then(function(res){
           _.props.updatePostVote(res.id,res)
           _.setState({
-            [votetypes[votetypeid]]:!_.state[votetypes[votetypeid]]
+            [votetypes[votetypeid]]:!nowstate
           })
         })
     }else{
+       
         commentVote(_.state.commentid,{option:votetype}).then(function(res){
           _.props.updateCommentVote(res.id,res)
           _.setState({
-            [votetypes[votetypeid]]:!_.state[votetypes[votetypeid]]
+            [votetypes[votetypeid]]:!nowstate
           })
         })
     }
   }
   render() {
     let votenum=this.getVoteNum()
+    
     return (
      <p className="col-xs-6 text-right vote-bar">
-     	<i className={`vote-icon like ${this.state.upVote?"after":""}`} onClick={()=>this.vote(0)}></i>
-      <i className={`vote-icon dislike ${this.state.downVote?"after":""}`} onClick={()=>this.vote(1)}></i>
+     	<i className={`vote-icon like ${this.state.upVote?"after":""}`} onClick={this.vote.bind(this,0)}></i>
+      <i className={`vote-icon dislike ${this.state.downVote?"after":""}`} onClick={this.vote.bind(this,1)}></i>
      	<i>{votenum}</i>
      </p>
     )

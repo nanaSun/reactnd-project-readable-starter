@@ -55,7 +55,7 @@ class PostList extends React.Component {
 
   }
   deletePost=(id)=>{ 
-    var _=this,id=id;
+    var _=this;
     deletePost(id).then(function(res){
       _.props.deletePost(res.id,res)
       _.setState({RedirectURL:'/'})

@@ -18,7 +18,6 @@ class CommentList extends React.Component {
   }
   getComments = (postId) => {
     let _=this
-
     getComments(postId).then(function(res){
         _.props.getComments(res)
 		}) 
@@ -73,9 +72,9 @@ class CommentList extends React.Component {
       </form>
       <h4>OTHER COMMENTS:</h4>
       <h5>TOTAL:{comments.length}</h5>
-      <div className="comment-sort">
+      <div className="sorting-bar">
         {bars.map((bar,index)=>(
-          <i key={"bar"+index}  className={sortKey===bar?"vote-sorting-asc":sortKey===`-${bar}`?"vote-sorting-des":""} onClick={()=>{this.setSortKey(bar)}}>BY {bar==="id"?"DEFAULT":bar.toUpperCase()}  </i>
+          <span key={"bar"+index}  className={sortKey===bar?"sorting-asc":sortKey===`-${bar}`?"sorting-des":""} onClick={()=>{this.setSortKey(bar)}}>BY {bar==="id"?"DEFAULT":bar.toUpperCase()}<i></i></span>
         ))}
       </div>
       <ul className="list-comments  list-unstyled">

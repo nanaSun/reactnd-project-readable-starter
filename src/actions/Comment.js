@@ -18,7 +18,7 @@ export function CommentRemove ({ id,item }) {
 }
 export function CommentUpdate ({ id,item }) {
   return {
-    type: DELETE_COMMENT,
+    type: UPDATE_COMMENT,
     id,
     item
   }
