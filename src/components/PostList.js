@@ -14,7 +14,8 @@ class PostList extends React.Component {
     categoryId:-1,
     sortKey:'id',
     loading:true,
-    bars:["#","title","time","vote","author","comment"]
+    bars:["id","title","timestamp","voteScore","author","commentCount"],
+    barsName:["#","title","time","vote","author","comment"]
   }
   componentWillMount(){
     let _=this
@@ -32,7 +33,12 @@ class PostList extends React.Component {
     })
   }
   componentWillReceiveProps(nextProps){
-    if(nextProps.match.params.categoryId !== this.props.match.params.categoryId){
+    if(typeof nextProps.match.params.categoryId==="undefined"){
+      this.setState({
+        categoryId:-1,
+        loading:false
+      })
+    }else if(nextProps.match.params.categoryId !== this.props.match.params.categoryId){
       const {categoryId}=nextProps.match.params
       this.setState({
         categoryId:categoryId,
@@ -62,7 +68,7 @@ class PostList extends React.Component {
     })
   }
   render() {
-    const {categoryId,sortKey,bars,loading}= this.state
+    const {categoryId,sortKey,bars,barsName,loading}= this.state
     let { posts } = this.props
     if(categoryId!==-1&&categoryId!=="post"){
       posts=posts.filter(function(post){
@@ -86,7 +92,7 @@ class PostList extends React.Component {
               <thead>
                 <tr className="sorting-bar">
                   {bars.map((bar,index)=>(
-                    <th key={"bar"+index} className={sortKey==={bar}?"sorting-asc":sortKey===`-${bar}`?"sorting-des":""} onClick={()=>{this.setSortKey(bar)}}>{bar.toUpperCase()}<i></i></th>
+                    <th key={"bar"+index} className={sortKey==={bar}?"sorting-asc":sortKey===`-${bar}`?"sorting-des":""} onClick={()=>{this.setSortKey(bar)}}>{barsName[index].toUpperCase()}<i></i></th>
                   ))}
                   <th>OPERATION</th>
                 </tr>
