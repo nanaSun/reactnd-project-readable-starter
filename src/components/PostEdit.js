@@ -67,7 +67,7 @@ class Post extends React.Component {
         deleted:_.state.deleted
     }).then(function(res){
       _.props.updatePost(_.state.id,{...res})
-      _.setState({...res,RedirectURL:'/post/'+res.category+"/"+res.id})
+      _.setState({...res,RedirectURL:'/'+res.category+"/"+res.id})
     })
   }
   createNewPost = (e) =>{
@@ -83,7 +83,7 @@ class Post extends React.Component {
     }).then(function(res){
        _.props.addPost({...res});
        //after create successful, we need to redirect
-       _.setState({...res,RedirectURL:'/post/'+res.category+"/"+res.id})
+       _.setState({...res,RedirectURL:'/'+res.category+"/"+res.id})
     })      
     
   }

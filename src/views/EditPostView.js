@@ -25,7 +25,7 @@ const EditPostView=({params,addNewPost,operation})=>(
 		  		{addNewPost?(
 					<Link className="btn btn-default pull-left" to={'/'}>back</Link>
 		  		):(
-		  			<Link className="btn btn-default pull-left" to={'/post/'+params.id}>back</Link>
+		  			<Link className="btn btn-default pull-left" to={'/'+params.category+'/'+params.id}>back</Link>
 		  		)}
 		  		<button type="submit" className="btn btn-default pull-right">{addNewPost?"add":"update"}</button>
 		  </div>

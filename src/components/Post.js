@@ -79,7 +79,7 @@ class Post extends React.Component {
       <PostView params={params}/>     
       <div className="row post-edit-bar">
           <p className="col-xs-6 text-left">
-          <Link to={`/post/${id}/edit`} className="btn btn-success">edit</Link>
+          <Link to={`/${params.category}/${id}/edit`} className="btn btn-success">edit</Link>
           <i className="btn btn-danger" onClick={this.deletePost.bind(this,id)}>delete</i>
           </p>
           {voteTpl}

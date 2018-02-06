@@ -80,7 +80,7 @@ class PostList extends React.Component {
       return (
         <div>
           <div className="clearfix">
-              <Link className="btn btn-success pull-right " to={"/post/add"}>New Post</Link>
+              <Link className="btn btn-success pull-right " to={"/add"}>New Post</Link>
           </div>
           <table className="table table-hover post-body">
               <thead>
@@ -95,14 +95,14 @@ class PostList extends React.Component {
        		    {posts.map((post,index)=>(
                 <tr key={post.id}>
                     <th>{index+1}</th>
-                    <td><Link to={"/post/"+post.category+"/"+post.id}>{post.title}</Link></td>
+                    <td><Link to={"/"+post.category+"/"+post.id}>{post.title}</Link></td>
                     <td>{moment(parseInt(post.timestamp,10)).format('MMM DD, YYYY')}</td>
                     <td>{post.voteScore}</td>
                     <td>{post.author}</td>
                     <td>{post.commentCount}</td>
                     <td className="row">
                       <p className="col-xs-6  post-edit-bar">
-                        <Link to={'/post/'+post.category+"/"+post.id+'/edit'} className="btn btn-success">edit</Link>
+                        <Link to={'/'+post.category+"/"+post.id+'/edit'} className="btn btn-success">edit</Link>
                         <i className="btn btn-danger" onClick={this.deletePost.bind(this,post.id)}>delete</i>
                       </p>
                       <Vote postID={post.id} type="post"/>
